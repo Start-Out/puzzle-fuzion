@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar styles */
+.scrollbar-hide::-webkit-scrollbar {
+    opacity: 0; /* Make the scrollbar transparent by default */
+}
+
+.scrollbar-style::-webkit-scrollbar {
+    width: 6px; /* Adjust the width of the scrollbar */
+    opacity: 0; /* Make the scrollbar transparent by default */
+    transition: opacity 0.4s ease; /* Transition for the opacity change */
+}
+
+.scrollbar-style:hover::-webkit-scrollbar {
+    opacity: 1; /* Make the scrollbar visible on hover */
+}
+
+.scrollbar-style::-webkit-scrollbar-track {
+    background: transparent; /* Color of the scrollbar track */
+}
+
+.scrollbar-style::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 6px; /* Rounded corners on the scrollbar thumb */
+}
+
+.scrollbar-style::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+}

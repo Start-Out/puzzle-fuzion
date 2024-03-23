@@ -1,0 +1,18 @@
+[
+    {   
+        "today": {
+            "green": ["Americano", "Latte", "Motcha", "Gibraltar"],
+            "yellow": ["Lemon", "Pineapple", "Mango", "Pear"],
+            "red": ["Book", "Cactus", "Hedgehog", "Skeleton"],
+            "gray": ["Cold", "Raw", "Dope", "Lit"]
+        }
+    },
+    {
+        "next": {
+            "green": ["Jaguar", "Husky", "Badgers", "Wallabies"],
+            "yellow": ["Ronaldo", "Honda", "Messi", "Ibrahimovic"],
+            "red": ["Rock", "Paper", "Scissors", "Shoot"],
+            "gray": ["Mustang", "BMW", "Hellcat", "Rivian"]
+        }
+    }
+]
