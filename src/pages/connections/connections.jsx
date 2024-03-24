@@ -132,7 +132,7 @@ export default function Connections(  ) {
                 ) : (
                     startingBoard && (
                         <div className="w-full flex flex-col items-center gap-8 px-4 md:px-8">
-                            <div className="flex flex-wrap justify-center gap-4 pt-16 pb-5 max-w-6xl bg-gray-800 rounded-lg shadow-md">
+                            <div className="flex flex-wrap justify-center gap-4 pt-12 pb-12 max-w-3xl bg-gray-800 rounded-lg shadow-md">
                                 {
                                     startingBoard.map((wordRow, index) => {
                                         if (wordRow[0] && wordRow[0].includes("hla")) {

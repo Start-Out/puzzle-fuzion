@@ -51,10 +51,10 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
                 </> : (
                 <>
                     <div className={"bg-gray-600 h-[70px] " +
-                        "w-[93%] sm:w-[83%] " +
-                        "border-2 rounded w-full" +
-                        "flex justify-center items-center " +
-                        "hover:bg-gray-700 select-none cursor-pointer text-center"}
+                        "w-[85vw] sm:w-[86%] " +
+                        " rounded w-full " +
+                        "flex flex-col justify-center items-center " +
+                        "select-none cursor-pointer"}
                             style={{
                                 backgroundColor: `${getWordColor(null, null, correct, level)}`,
                                 color: `black`
@@ -63,7 +63,7 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
                         <div className={"font-bold text-[1.3rem] md:text-[1.6rem]"}>
                             {category}
                         </div>
-                        <div className={"text-[1rem] sm:text-[1.3rem]"}>
+                        <div className={"text-[0.9rem] sm:text-[1.2rem] italic"}>
                             {listOfWords}
                         </div>
                     </div>
