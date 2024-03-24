@@ -1,20 +1,7 @@
 import {api} from "../../../../convex/_generated/api.js";
 import {useEffect, useRef, useState} from "react";
 import { useQuery as convexQuery, useMutation } from "convex/react";
-
-const PlayerMessage = ({ player, message }) => (
-    <div className="flex flex-col items-start justify-start mb-7">
-        <div className="mb-1 text-sm font-bold">{player}</div>
-        <div className="max-w-[80%] border-b border-dashed">{message}</div>
-    </div>
-);
-
-const YourMessage = ({ message }) => (
-    <div className="flex flex-col items-end justify-end mb-4 pr-10">
-        <div className="mb-1 text-sm font-bold text-white">You</div>
-        <div className="max-w-[80%] border-b border-dashed">{message}</div>
-    </div>
-);
+import * as exports from "../../../exports.js"
 
 export default function ChatBox ( {toggle} ) {
     const [userName, setUserName] = useState("")
@@ -46,18 +33,15 @@ export default function ChatBox ( {toggle} ) {
 
     useEffect( () => {
         if (user) {
-            console.log("user: ", user.name)
             setUserName(user.name)
         }
     }, [user])
 
-
-
+    // scroll to last message
     const messagesEndRef = useRef()
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
-
 
     const handleSendMessage = (e) => {
         const send = async () => {
@@ -72,7 +56,7 @@ export default function ChatBox ( {toggle} ) {
 
     return (
         <>
-            <div className="fixed inset-0 bg-black min-h-screen bg-opacity-50 "></div>
+            <exports.Backdrop />
             <div className={"fixed inset-0 flex justify-center items-center "} onClick={() => toggle()}>
                 <div className={"chat bg-gray-800 text-white rounded-lg shadow-lg " +
                     "flex flex-col justify-between max-w-md mx-auto my-4 z-60"}
@@ -124,5 +108,19 @@ export default function ChatBox ( {toggle} ) {
         </>
     )
 }
+
+const PlayerMessage = ({ player, message }) => (
+    <div className="flex flex-col items-start justify-start mb-7">
+        <div className="mb-1 text-sm font-bold">{player}</div>
+        <div className="max-w-[80%] border-b border-dashed">{message}</div>
+    </div>
+);
+
+const YourMessage = ({ message }) => (
+    <div className="flex flex-col items-end justify-end mb-4 pr-10">
+        <div className="mb-1 text-sm font-bold text-white">You</div>
+        <div className="max-w-[80%] border-b border-dashed">{message}</div>
+    </div>
+);
 
 

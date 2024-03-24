@@ -1,4 +1,5 @@
 import {useState} from "react";
+import * as exports from "../../../exports.js"
 
 export default function Session( {toggle} ) {
     const [anonGameSession, setAnonGameSession] = useState("")
@@ -19,7 +20,7 @@ export default function Session( {toggle} ) {
 
     return (
         <div className={""}>
-            <div className="fixed inset-0 bg-black min-h-screen bg-opacity-50 " ></div>
+            <exports.Backdrop />
             <div className={"fixed inset-0 flex justify-center items-center"} onClick={() => toggle()}>
                 <div className={"bg-gray-800 rounded-md"}
                      onClick={(e) => e.stopPropagation()}

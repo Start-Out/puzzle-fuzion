@@ -1,17 +1,17 @@
-export default function Restart() {
-    const restartGame = () => {
-        sessionStorage.removeItem("gameId")
-        window.location.reload();
+import * as exports from "../../../exports.js"
+
+export default function Restart( {toggle} ) {
+    const handleOK = () => {
+        toggle()
     }
 
+    const handleCancel = () => {
+        toggle()
+    }
+
+    const alertText = "Are you sure you want to restart? You'll lose the current game progress"
+
     return (
-        <button
-            onClick={restartGame}
-            className={"px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg shadow-lg " +
-                "focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 " +
-                "transition duration-150 ease-in-out"}
-        >
-            Restart Game
-        </button>
+        <exports.ConfirmAlert text={alertText} toggle={toggle} onOk={handleOK} onCancel={handleCancel}/>
     )
 }
