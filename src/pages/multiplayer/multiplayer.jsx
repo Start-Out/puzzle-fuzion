@@ -29,8 +29,7 @@ export default function Multiplayer() {
     return (
         <div className={"flex flex-col items-center justify-center min-h-[95vh] min-w-screen"}>
             {
-                loading ? <exports.Loading /> :
-                user !== null ? <exports.MultiplayerWordle userId={userId} setLoading={setLoading}/> : <exports.Login />
+                user !== null ? <exports.MultiplayerWordle userId={userId} /> : <exports.Login />
             }
         </div>
     );

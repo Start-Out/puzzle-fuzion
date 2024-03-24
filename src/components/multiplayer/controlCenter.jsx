@@ -21,21 +21,18 @@ export default function ControlCenter( {setLoading} ) {
 
     return (
         <>
-            {   // backdrop
-                chatboxVisible && (
-                    <div className="fixed inset-0 bg-black min-h-screen bg-opacity-50 z-10"
-                         onClick={toggleChatbox}></div>
-                )
-            }
             <div className={"p-4 z-20"}>
                 <div className={"flex flex-row gap-2"}>
-                    <exports.Session />
+                    <div>
+                        <Button value={"Session"} toggle={toggleSession} />
+                        { sessionVisible && <exports.Session toggle={toggleSession}/> }
+                    </div>
 
                     <div className=""><exports.Restart /></div>
 
                     <div className="">
                         <Button value={"Chat"} toggle={toggleChatbox} />
-                        {chatboxVisible &&
+                        { chatboxVisible &&
                             <exports.ChatBox toggleLoading={(setThis) => setLoading(setThis)}
                                 toggle={toggleChatbox}
                             />
