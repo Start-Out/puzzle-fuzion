@@ -34,6 +34,7 @@ export default {
         pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       colors: {
+        "pf-navbar": "#1F2937",
         "pf-dark-background": "#1A202C",
         "pf-light-background": "#F7FAFC",
         "pf-dark-text": "#2D3748",
@@ -44,7 +45,9 @@ export default {
         "pf-absent": "#A0AEC0",
         "pf-present": "#ED8936",
         "pf-correct": "#38A169",
-        "pf-connection-select": "#EFEFE6"
+        "pf-connection-select": "#EFEFE6",
+        "pf-setting": "rgba(164,66,66,0.80)",
+        "pf-setting-h": "rgba(164,66,66,0.90)",
       }
     },
   },
