@@ -13,24 +13,23 @@ export default function Multiplayer() {
             setUserId(userIdFromSession)
             console.log("from session storage, uid: ", userIdFromSession)
         }
+
+        setTimeout( () => {
+            setIsLoading(false)
+        }, 1000)
+
     }, [])
 
     const user = convexQuery(api.users.getUser, {
         _id: `${userId}`
     })
 
-    useEffect(() => {
-        if (user) {
-            setIsLoading(false)
-        }
-    }, [user])
     return (
         <div className={"flex flex-col items-center justify-center min-h-[95vh] min-w-screen"}>
             {
-                isLoading && <exports.Loading text={"Loading..."}/>
-            }
-            {
-                !isLoading ? !user ?  <exports.Login /> : <exports.MultiplayerWordle userId={userId} /> : null
+                isLoading ? <exports.Loading text={"Loading..."} /> : (
+                    !user ? <exports.Login /> : <exports.MultiplayerWordle userId={userId} />
+                )
             }
         </div>
     );
