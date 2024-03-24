@@ -26,12 +26,17 @@ export default {
           from: { transform: 'rotate(0deg)' },
           to: { transform: 'rotate(360deg)' },
         },
+        pop: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        }
       },
       // Define the animation utility
       animation: {
         wiggle: 'wiggle 5s ease-in-out infinite',
         slowSpin: 'slowSpin 3s linear infinite',
         pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        pop: 'pop 0.5s ease-in-out infinite alternate',
       },
       colors: {
         "pf-navbar": "#1F2937",

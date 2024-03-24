@@ -29,3 +29,9 @@
 .scrollbar-style::-webkit-scrollbar-thumb:hover {
     background: #555; /* Color of the scrollbar thumb on hover */
 }
+
+@media (min-width: 640px) { /* This corresponds to Tailwind's 'md' breakpoint */
+    .last-child-center > :last-child:nth-child(odd) {
+        grid-column: span 2; /* Or 'span 2 / span 2' for clarity */
+    }
+}
