@@ -8,6 +8,31 @@ export default {
   ],
   theme: {
     extend: {
+      // Add custom keyframes for animations
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(360deg)' },
+          '50%': { transform: 'rotate(180deg)' },
+        },
+        pulse: {
+          '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+          '50%': { opacity: 0.5, transform: 'scale(1.1)' },
+        },
+        bounce: {
+          '0%, 100%': { transform: 'translateY(-30%)', animationTimingFunction: 'cubic-bezier(0.8,0,1,1)' },
+          '50%': { transform: 'none', animationTimingFunction: 'cubic-bezier(0,0,0.2,1)' },
+        },
+        slowSpin: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+      },
+      // Define the animation utility
+      animation: {
+        wiggle: 'wiggle 5s ease-in-out infinite',
+        slowSpin: 'slowSpin 3s linear infinite',
+        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
       colors: {
         "pf-dark-background": "#1A202C",
         "pf-light-background": "#F7FAFC",
