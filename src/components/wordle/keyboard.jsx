@@ -12,37 +12,7 @@ import {useEffect, useState} from "react";
 import * as exports from "../../exports.js"
 import {useQuery} from "@tanstack/react-query";
 
-const analyzeWord = (word, wordleWord) => {
-    let result = [];
-
-    // Convert wordleWord into an array to manipulate its characters
-    let wordleChars = wordleWord.split('');
-
-    word.split('').forEach((char, index) => {
-        if (wordleChars[index] === char) {
-            // Correct character in the correct position
-            result.push('correct');
-            wordleChars[index] = null; // Mark this character as checked
-        } else if (wordleChars.includes(char)) {
-            // Correct character in the wrong position
-            result.push('present');
-            // Mark the first occurrence of this character as checked
-            wordleChars[wordleChars.indexOf(char)] = null;
-        } else {
-            result.push('absent');
-        }
-    });
-
-    console.log("final result: ", result)
-    return result
-};
-
 export default function Keyboard() {
-    const keyboard_keys = [
-        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-        ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'hla']
-    ]
 
     const dispatch = useDispatch()
     const guesses = useSelector(getGuesses)
@@ -51,6 +21,7 @@ export default function Keyboard() {
 
     const [wordToCheck, setWordToCheck] = useState('')
     const [prevWord, setPrevWord] = useState("")
+    const [queriedWord, setQueriedWord] = useState("")
     const [checkWord, setCheckWord] = useState(false);
     const [letterStatuses, setLetterStatuses] = useState({});
     const [gameDone, setGameDone] = useState(false)
@@ -59,12 +30,12 @@ export default function Keyboard() {
         if (!gameDone) {
             if (letter === "Enter") {
                 handleSubmit()
-                // event.target.blur()
+                event.target.blur()
                 return
             }
             else if (letter === "hla") {
                 dispatch(removeGuess())
-                // event.target.blur()
+                event.target.blur()
                 return
             }
             dispatch(updateGuess({letter: letter.toLowerCase()}))
@@ -76,7 +47,6 @@ export default function Keyboard() {
     const handleSubmit = () => {
         if (!gameDone) {
             if (cursor.col === 4) {
-                console.log("guess: ", guesses[cursor.row])
                 const word = guesses[cursor.row].join('');
 
                 if (cursor.row > 0 && guesses[cursor.row-1].join('') === guesses[cursor.row].join('')) {
@@ -96,14 +66,12 @@ export default function Keyboard() {
         const handleKeyPress = (event) => {
             const tagName = document.activeElement.tagName.toLowerCase();
             if (tagName === 'input' || tagName === 'textarea') {
-                // If so, ignore the key press
                 return;
             }
 
             // Check if any modifier key is pressed
             const isModifierKey = event.ctrlKey || event.altKey || event.shiftKey || event.metaKey;
             if (isModifierKey) {
-                // Ignore the key press if it's part of a key combination
                 return;
             }
 
@@ -129,12 +97,23 @@ export default function Keyboard() {
     const {isLoading} = useQuery({
         queryKey: ["word", wordToCheck],
         queryFn: async () => {
+            console.log("wordToCheck: ", wordToCheck)
+            console.log("queriedWord: ", queriedWord)
+
+            if (wordToCheck === queriedWord) {
+                return
+            }
+
             const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToCheck}`);
             if (!response.ok) {
                 alert(`${wordToCheck} is an invalid word!`);
+                setQueriedWord(wordToCheck)
                 return
             }
             const data = await response.json()
+
+            // console.log("data: ", data)
+            setQueriedWord(data[0].word)
 
             if (data[0] && data[0].meanings.length > 0 && !gameDone && prevWord !== wordToCheck) {
                 setPrevWord(wordToCheck)
@@ -192,15 +171,6 @@ export default function Keyboard() {
         }
     };
 
-    // Responsive button classes
-    const buttonBaseClasses = "bg-pf-keyboard-background hover:bg-gray-400 " +
-                                "text-pf-light-text font-bold " +
-                                "rounded shadow " +
-                                "h-[7vh] select-none "
-    const defaultButtonClasses = "w-[7.7vw] md:w-[4vw] ";
-    const enterButtonClasses = "w-[13vw] p-1 text-[1rem] md:w-[6vw] ";
-    const backButtonClasses = "w-[10vw] p-1 md:w-[5vw] md:p-2 ";
-
     return (
         <>
             <div className={"flex flex-col items-center justify-center gap-2 p-4 mx-auto max-h-[100%]"}>
@@ -233,3 +203,43 @@ export default function Keyboard() {
         </>
     )
 }
+
+// Responsive button classes
+const buttonBaseClasses = "bg-pf-keyboard-background hover:bg-gray-400 " +
+    "text-pf-light-text font-bold " +
+    "rounded shadow " +
+    "h-[7vh] select-none "
+const defaultButtonClasses = "w-[7.7vw] md:w-[4vw] ";
+const enterButtonClasses = "w-[13vw] p-1 text-[1rem] md:w-[6vw] ";
+const backButtonClasses = "w-[10vw] p-1 md:w-[5vw] md:p-2 ";
+
+const keyboard_keys = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'hla']
+]
+
+const analyzeWord = (word, wordleWord) => {
+    let result = [];
+
+    // Convert wordleWord into an array to manipulate its characters
+    let wordleChars = wordleWord.split('');
+
+    word.split('').forEach((char, index) => {
+        if (wordleChars[index] === char) {
+            // Correct character in the correct position
+            result.push('correct');
+            wordleChars[index] = null; // Mark this character as checked
+        } else if (wordleChars.includes(char)) {
+            // Correct character in the wrong position
+            result.push('present');
+            // Mark the first occurrence of this character as checked
+            wordleChars[wordleChars.indexOf(char)] = null;
+        } else {
+            result.push('absent');
+        }
+    });
+
+    console.log("final result: ", result)
+    return result
+};
