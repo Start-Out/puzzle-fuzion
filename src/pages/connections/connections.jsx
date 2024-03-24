@@ -21,7 +21,6 @@ export default function Connections(  ) {
     const {game_id} = useParams()
     const _id = game_id
     const [query, setQuery] = useState(false)
-    const attempts = useSelector(getAttempts)
 
     const game = convexQuery(api.connections.getGame, {_id: _id || "hla"})
 
@@ -156,9 +155,7 @@ export default function Connections(  ) {
                                     })
                                 }
                             </div>
-                            <div>
-                                Mistakes left: {attempts}
-                            </div>
+                            <exports.Mistakes />
                             <div className="w-full max-w-6xl">
                                 <exports.ControlCenter />
                             </div>
