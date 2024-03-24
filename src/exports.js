@@ -4,14 +4,14 @@ import Connections from "./pages/connections/connections.jsx";
 import Create from "./pages/create/create.jsx";
 import Settings from "./pages/settings/settings.jsx";
 import Wordle from "./pages/wordle/wordle.jsx";
-import MultiplayerWordle from "./pages/multiplayer/wordle.jsx";
+import MultiplayerWordle from "./components/multiplayer/wordle.jsx";
 import Input from "./components/wordle/input.jsx"
 import MultiplayerInput from "./components/multiplayer/input.jsx"
 import MultiplayerKeyboard from "./components/multiplayer/keyboard.jsx"
 import Keyboard from "./components/wordle/keyboard.jsx";
 import Loading from "./components/loading/loading.jsx";
 import Multiplayer from "./pages/multiplayer/multiplayer.jsx";
-import ChatBox from "./pages/multiplayer/chatbox.jsx";
+import ChatBox from "./components/multiplayer/controlCenter/chatbox.jsx";
 import Login from "./components/login/login.jsx";
 import WordBox from "./components/connections/wordBox.jsx";
 import ControlCenter from "./components/connections/controlCenter.jsx";

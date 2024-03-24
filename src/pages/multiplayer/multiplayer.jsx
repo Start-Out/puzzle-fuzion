@@ -33,7 +33,8 @@ export default function Multiplayer() {
                 <exports.Loading /> :
                 user !== null ?
                 <>
-                    {chatboxVisible && (
+                    {   // backdrop
+                        chatboxVisible && (
                         <div className="fixed inset-0 bg-black min-h-screen bg-opacity-50 z-10" onClick={toggleChatbox}></div>
                     )}
                     <div className="absolute top-[10vh] right-0 p-4 z-20">
