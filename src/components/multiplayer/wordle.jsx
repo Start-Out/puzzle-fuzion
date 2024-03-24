@@ -92,7 +92,7 @@ export default function Wordle ( {userId} ) {
 
     return (
         <div className={"flex flex-col justify-center items-center overflow-y-hidden " +
-            "max-h-screen min-w-screen bg-gray-900 text-white"}>
+            "text-white"}>
             <div className="hidden sm:block text-4xl md:text-5xl font-bold mb-10 select-none">Multiplayer</div>
             <div className="wordle-content mt-8 flex flex-col items-center space-y-4">
                 <exports.MultiplayerControlCenter />

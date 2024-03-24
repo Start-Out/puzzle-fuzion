@@ -28,24 +28,10 @@ import keyboard_light_mode_backspace from './assets/keyboard_light_mode_backspac
 import keyboard_dark_mode_backspace from './assets/keyboard_dark_mode_backspace.png'
 import puzzle_fuzion from "./assets/puzzle_fusion.png"
 
-const colors = {
-    "pf-dark-background": "#1A202C",
-    "pf-light-background": "#F7FAFC",
-    "pf-dark-text": "#2D3748",
-    "pf-light-text": "#E2E8F0",
-    "pf-dark-button": "#2B6CB0",
-    "pf-light-button": "#68D391",
-    "pf-keyboard-background" : "rgb(129,131,132)",
-    "pf-absent": "#A0AEC0",
-    "pf-present": "#ED8936",
-    "pf-correct": "#38A169",
-    "pf-connection-select": "#EFEFE6"
-}
-
 export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerKeyboard,
     Connections, Create, Settings, Input, Keyboard, Loading, Multiplayer, ChatBox, Login,
     WordBox, ControlCenter, CategoryCard, CreateControlCenter, Mistakes, MultiplayerControlCenter,
     Restart, Session, ConfirmAlert, Backdrop,
-    keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion, colors
+    keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion
 }
 

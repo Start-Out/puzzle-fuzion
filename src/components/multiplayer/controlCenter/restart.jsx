@@ -2,6 +2,8 @@ import * as exports from "../../../exports.js"
 
 export default function Restart( {toggle} ) {
     const handleOK = () => {
+        sessionStorage.removeItem("gameId")
+        window.location.reload()
         toggle()
     }
 
