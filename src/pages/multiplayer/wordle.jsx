@@ -115,8 +115,6 @@ export default function Wordle ({userId} ) {
         setSessionOptionsVisible(prev => !prev);
     };
 
-    console.log("Guess word: ", wordle.word);
-
     return (
         <div className="flex flex-col justify-center items-center p-4 overflow-y-hidden max-h-screen min-w-screen bg-gray-900 text-white">
             <div className="hidden sm:block text-4xl md:text-5xl font-bold mb-10 select-none">

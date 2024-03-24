@@ -109,6 +109,11 @@ export default function Connections(  ) {
         }
     }, [game, startingBoard])
 
+    useEffect(() => {
+        const halfHeight = document.body.scrollHeight * 0.5;
+        window.scrollTo(0, halfHeight);
+    }, []);
+
     return (
         <>
             <div className="flex flex-col items-center justify-center min-h-[93vh] bg-gray-900 text-white">
