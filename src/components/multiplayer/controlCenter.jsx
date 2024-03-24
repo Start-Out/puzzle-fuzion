@@ -35,7 +35,11 @@ export default function ControlCenter( {setLoading} ) {
 
                     <div className="">
                         <Button value={"Chat"} toggle={toggleChatbox} />
-                        {chatboxVisible && <exports.ChatBox toggleLoading={(setThis) => setLoading(setThis)} />}
+                        {chatboxVisible &&
+                            <exports.ChatBox toggleLoading={(setThis) => setLoading(setThis)}
+                                toggle={toggleChatbox}
+                            />
+                        }
                     </div>
                 </div>
 

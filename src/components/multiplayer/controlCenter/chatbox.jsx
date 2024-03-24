@@ -16,7 +16,7 @@ const YourMessage = ({ message }) => (
     </div>
 );
 
-export default function ChatBox ( {toggleLoading} ) {
+export default function ChatBox ( {toggleLoading, toggle} ) {
     const [userName, setUserName] = useState("")
     const [userId, setUserId] = useState("")
     const [gameId, setGameId] = useState("")
@@ -72,14 +72,17 @@ export default function ChatBox ( {toggleLoading} ) {
     }
 
     return (
-        <>
-            <div className="chat bg-gray-800 text-white rounded-lg shadow-lg flex flex-col justify-between max-w-md mx-auto my-4">
+        <div className={"fixed inset-0 flex justify-center items-center "} onClick={() => toggle()}>
+            <div className={"chat bg-gray-800 text-white rounded-lg shadow-lg " +
+                "flex flex-col justify-between max-w-md mx-auto my-4 z-60"}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className="p-4 border-b border-gray-700">
                     <p>
                         Connected as <strong className="text-yellow-300">{userName}</strong>
                     </p>
                 </div>
-                <div className="max-h-[60vh] overflow-auto p-4 space-y-2">
+                <div className="h-[40vh] overflow-auto p-4 space-y-2">
                     {messages?.map((message) =>
                         message.sender === userName ? (
                             <YourMessage
@@ -116,7 +119,7 @@ export default function ChatBox ( {toggleLoading} ) {
                     </button>
                 </form>
             </div>
-        </>
+        </div>
     )
 }
 
