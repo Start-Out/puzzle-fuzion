@@ -33,11 +33,11 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="bg-gray-800 z-20">
+            <nav className="bg-pf-navbar z-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4 md:space-x-10">
                         <div className="flex justify-start lg:w-0 lg:flex-1">
-                            <NavLink to="/" className="text-white font-bold">
+                            <NavLink to="/" >
                                 <img src={exports.puzzle_fuzion} alt="logo" className="w-[55px] h-auto rounded-[10px]" />
                             </NavLink>
                         </div>
@@ -68,12 +68,14 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile menu, show/hide based on mobile menu state. */}
-                <div className={`${isOpen ? "absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden" : "hidden"}`}>
-                    <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-gray-800 divide-y-2 divide-gray-50">
+                <div className={`${isOpen ? "absolute top-0 inset-x-0 transition transform origin-top-right md:hidden" : "hidden"}`}>
+                    <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-pf-navbar ">
                         <div className="pt-5 pb-6 px-5">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <img className="h-8 w-auto" src={exports.puzzle_fuzion} alt="Workflow" />
+                                    <NavLink to={"/"} onClick={handleClose}>
+                                        <img src={exports.puzzle_fuzion} alt="logo" className="h-11 w-auto rounded-[10px]" />
+                                    </NavLink>
                                 </div>
                                 <div className="-mr-2">
                                     <button
