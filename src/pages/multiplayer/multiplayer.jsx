@@ -5,6 +5,7 @@ import * as exports from '../../exports.js'
 
 export default function Multiplayer() {
     const [userId, setUserId] = useState("")
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect( () => {
         const userIdFromSession = sessionStorage.getItem('userId');
@@ -18,10 +19,18 @@ export default function Multiplayer() {
         _id: `${userId}`
     })
 
+    useEffect(() => {
+        if (user) {
+            setIsLoading(false)
+        }
+    }, [user])
     return (
         <div className={"flex flex-col items-center justify-center min-h-[95vh] min-w-screen"}>
             {
-                !user ?  <exports.Login /> : <exports.MultiplayerWordle userId={userId} />
+                isLoading && <exports.Loading text={"Loading..."}/>
+            }
+            {
+                !isLoading ? !user ?  <exports.Login /> : <exports.MultiplayerWordle userId={userId} /> : null
             }
         </div>
     );

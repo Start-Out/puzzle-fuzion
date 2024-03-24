@@ -16,17 +16,17 @@ export default function ControlCenter() {
             <div className={"p-4 z-20"}>
                 <div className={"flex flex-row gap-2"}>
                     <div>
-                        <Button value={"Session"} toggle={toggleSession} color={"purple"}/>
+                        <Button value={"Session"} toggle={toggleSession} />
                         { sessionVisible && <exports.Session toggle={toggleSession}/> }
                     </div>
 
                     <div>
-                        <Button value={"Restart"} toggle={toggleRestart} color={"red"}/>
+                        <Button value={"Restart"} toggle={toggleRestart} />
                         { restartVisible && <exports.Restart toggle={toggleRestart}/> }
                     </div>
 
                     <div>
-                        <Button value={"Chat"} toggle={toggleChatbox} color={"blue"}/>
+                        <Button value={"Chat"} toggle={toggleChatbox} />
                         { chatboxVisible && <exports.ChatBox toggle={toggleChatbox} /> }
                     </div>
                 </div>
@@ -36,8 +36,8 @@ export default function ControlCenter() {
     )
 }
 
-const Button = ( {value, toggle, color} ) => {
-    if (color === "red") {
+const Button = ( {value, toggle} ) => {
+    if (value === "Restart") {
         return (
             <button onClick={() => toggle()}
                     className={`bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-full`}>
@@ -45,9 +45,17 @@ const Button = ( {value, toggle, color} ) => {
             </button>
         )
     }
+    else if (value === "Session") {
+        return (
+            <button onClick={() => toggle()}
+                    className={`bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full`}>
+                {value}
+            </button>
+        )
+    }
     return (
         <button onClick={() => toggle()}
-                className={`bg-${color}-500 hover:bg-${color}-700 text-white font-bold py-2 px-4 rounded-full`}>
+                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full`}>
             {value}
         </button>
     )
