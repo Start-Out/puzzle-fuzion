@@ -14,6 +14,10 @@ export default function Home() {
                     <img src={exports.connections_icon} alt={"connection icon"} className="w-16 h-16 mb-4 mx-auto group-hover:animate-slowSpin" />
                     Play Connections
                 </NavLink>
+                <NavLink to={"/multiplayer"} className={"group relative overflow-hidden bg-green-500 hover:bg-green-700 rounded-lg hover:text-[1.3rem] py-8 px-4 shadow-lg transform hover:scale-105 transition-all transition duration-500 ease-in-out"} >
+                    <img src={exports.multiplayer_icon} alt={"multiplayer icon"} className={"w-16 h-16 mb-4 mx-auto group-hover:animate-slowSpin"} />
+                    Play With Friends
+                </NavLink>
                 <NavLink to={"/create"} className="group relative overflow-hidden bg-purple-400 hover:bg-purple-600 rounded-lg hover:text-[1.3rem] py-8 px-4 shadow-lg transform hover:scale-105 transition-all transition duration-500 ease-in-out">
                     <img src={exports.create_icon} alt={"create your own puzzle icon"} className="w-16 h-16 mb-4 mx-auto group-hover:animate-pulse" />
                     Create Your Own Puzzle

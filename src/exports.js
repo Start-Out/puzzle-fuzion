@@ -33,12 +33,13 @@ import wordle_icon from "./assets/wordle_icon.png"
 import connections_icon from "./assets/connections_icon.svg"
 import settings_icon from "./assets/settings_icon.svg"
 import create_icon from "./assets/create_icon.svg"
+import multiplayer_icon from "./assets/multiplayer_icon.png"
 
 export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerKeyboard,
     Connections, Create, Settings, Input, Keyboard, Loading, Multiplayer, ChatBox, Login,
     WordBox, ControlCenter, CategoryCard, CreateControlCenter, Mistakes, MultiplayerControlCenter,
     Restart, Session, ConfirmAlert, Backdrop,
     keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion, login_icon, signup_icon,
-    wordle_icon, connections_icon, settings_icon, create_icon
+    wordle_icon, connections_icon, settings_icon, create_icon, multiplayer_icon
 }
 

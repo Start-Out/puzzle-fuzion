@@ -131,7 +131,7 @@ export default function Login() {
                         )}
                     </div>
                     <div className="px-10 py-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center">
-                        {isSignupActive ? (
+                        {!isSignupActive ? (
                             <span className="flex items-center text-gray-600">
                                 <img src={exports.signup_icon} alt="Signup" className="w-5 h-5 mr-2" />
                                 New here? Sign up!
@@ -139,7 +139,7 @@ export default function Login() {
                         ) : (
                             <span className="flex items-center text-gray-600">
                                 <img src={exports.login_icon} alt="Login" className="w-5 h-5 mr-2" />
-                                Welcome back!
+                                Coming back? Log in!
                               </span>
                         )}
                         <button
