@@ -115,13 +115,19 @@ export default function Connections(  ) {
                 <div className={"select-none text-gray-600 " +
                     "mt-0 sm:mt-10 mb-10 "}
                 >
-                    <h1 className={"text-4xl font-bold text-center"}>
-                        {gameName ? gameName : "Connections"}
-                    </h1>
                     {
-                        creator ? (
-                            <h2 className={"text-2xl font-bold text-center italic"}>By {creator}</h2>
-                        ) : <></>
+                        !isLoading && (
+                            <>
+                                <h1 className={"text-4xl font-bold text-center"}>
+                                    {gameName ? gameName : "Connections"}
+                                </h1>
+                                {
+                                    creator ? (
+                                        <h2 className={"text-2xl font-bold text-center italic"}>By {creator}</h2>
+                                    ) : <></>
+                                }
+                            </>
+                        )
                     }
                 </div>
                 {isLoading? (
