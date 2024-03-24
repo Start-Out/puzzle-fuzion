@@ -27,11 +27,13 @@ import Backdrop from "./components/backdrop/backdrop.jsx";
 import keyboard_light_mode_backspace from './assets/keyboard_light_mode_backspace.png'
 import keyboard_dark_mode_backspace from './assets/keyboard_dark_mode_backspace.png'
 import puzzle_fuzion from "./assets/puzzle_fusion.png"
+import login_icon from "./assets/login_icon.png"
+import signup_icon from "./assets/signup_icon.png"
 
 export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerKeyboard,
     Connections, Create, Settings, Input, Keyboard, Loading, Multiplayer, ChatBox, Login,
     WordBox, ControlCenter, CategoryCard, CreateControlCenter, Mistakes, MultiplayerControlCenter,
     Restart, Session, ConfirmAlert, Backdrop,
-    keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion
+    keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion, login_icon, signup_icon
 }
 

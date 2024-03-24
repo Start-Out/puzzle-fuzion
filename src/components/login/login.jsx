@@ -1,6 +1,7 @@
 import {useState} from "react";
 import { useMutation } from "convex/react";
 import { api } from "/convex/_generated/api"
+import * as exports from "../../exports.js"
 
 export default function Login() {
     const [isSignupActive, setIsSignupActive] = useState(false);
@@ -66,94 +67,89 @@ export default function Login() {
     };
 
     return (
-        <div className={"flex flex-col items-center justify-center min-h-[50vh] min-w-[60vw] " +
-            "bg-gray-200 rounded-[10px]"}>
-            <div className="w-full max-w-xs">
-                <>
-                    <h1 className={"font-bold text-[3rem] text-black text-center mb-10"}>
-                        { !isSignupActive ? "Log in" : "Sign up"}
-                    </h1>
-                </>
-                {
-                    !isSignupActive ? (
-                        <form onSubmit={handleLogin} className="bg-gray-100 shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="login-name">
-                                    Name
-                                </label>
-                                <input
-                                    name="name"
-                                    className={"shadow appearance-none border rounded w-full py-2 px-3 " +
-                                        "text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
-                                    id="login-name"
-                                    type="text"
-                                    placeholder="Name"
-                                />
-                            </div>
-                            <div className="mb-6">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="login-password">
-                                    Password
-                                </label>
-                                <input
-                                    name="password"
-                                    className={"shadow appearance-none border rounded w-full py-2 px-3 " +
-                                        "text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"}
-                                    id="login-password"
-                                    type="password"
-                                    placeholder="**********" />
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                                    Login
-                                </button>
-                                <button className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                                    onClick={ () => setIsSignupActive(true)}
+        <div className="flex flex-col items-center justify-center h-screen w-screen bg-gradient-to-br from-black to-blue-700">
+            <div className="w-full max-w-md">
+                <div className="w-[80vw] sm:w-[60vw] md:w-[45vw] lg:w-[30vw] mx-auto bg-white rounded-lg shadow-2xl overflow-hidden">
+                    <div className="px-10 py-8">
+                        <h1 className="font-bold text-3xl text-center text-black mb-6">
+                            Puzzle Fuzion
+                        </h1>
+                        {isSignupActive ? (
+                            <form onSubmit={handleSignup} className="space-y-6">
+                                <div>
+                                    <label className="text-sm font-bold text-gray-600 block">Name</label>
+                                    <input
+                                        name="name"
+                                        className="w-full p-2 border border-gray-300 rounded mt-1"
+                                        type="text"
+                                        placeholder="Your Name"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-sm font-bold text-gray-600 block">Password</label>
+                                    <input
+                                        name="password"
+                                        className="w-full p-2 border border-gray-300 rounded mt-1"
+                                        type="password"
+                                        placeholder="**********"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm font-medium"
                                 >
-                                    Sign up
-                                </button>
-                            </div>
-                        </form>
-                    ) : (
-                        <form onSubmit={handleSignup} className="bg-gray-100 shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="signup-name">
-                                    Name
-                                </label>
-                                <input
-                                    name="name"
-                                    className={"shadow appearance-none border rounded w-full py-2 px-3 " +
-                                        "text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
-                                    id="login-name"
-                                    type="text"
-                                    placeholder="Name"
-                                />
-                            </div>
-                            <div className="mb-6">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="signup-password">
-                                    Password
-                                </label>
-                                <input
-                                    name="password"
-                                    className={"shadow appearance-none border rounded w-full py-2 px-3 " +
-                                        "text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"}
-                                    id="login-password"
-                                    type="password"
-                                    placeholder="**********" />
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                                     Sign Up
                                 </button>
-                                <button className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                                        onClick={ () => setIsSignupActive(false)}
+                            </form>
+                        ) : (
+                            <form onSubmit={handleLogin} className="space-y-6">
+                                <div>
+                                    <label className="text-sm font-bold text-gray-600 block">Name</label>
+                                    <input
+                                        name="name"
+                                        className="w-full p-2 border border-gray-300 rounded mt-1"
+                                        type="text"
+                                        placeholder="Your Name"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-sm font-bold text-gray-600 block">Password</label>
+                                    <input
+                                        name="password"
+                                        className="w-full p-2 border border-gray-300 rounded mt-1"
+                                        type="password"
+                                        placeholder="**********"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm font-medium"
                                 >
                                     Login
                                 </button>
-                            </div>
-                        </form>
-
-                    )
-                }
+                            </form>
+                        )}
+                    </div>
+                    <div className="px-10 py-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center">
+                        {isSignupActive ? (
+                            <span className="flex items-center text-gray-600">
+                                <img src={exports.signup_icon} alt="Signup" className="w-5 h-5 mr-2" />
+                                New here? Sign up!
+                            </span>
+                        ) : (
+                            <span className="flex items-center text-gray-600">
+                                <img src={exports.login_icon} alt="Login" className="w-5 h-5 mr-2" />
+                                Welcome back!
+                              </span>
+                        )}
+                        <button
+                            className="text-blue-600 hover:text-blue-700 font-semibold text-sm"
+                            onClick={() => setIsSignupActive(!isSignupActive)}
+                        >
+                            {isSignupActive ? "Log in" : "Sign up"}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );

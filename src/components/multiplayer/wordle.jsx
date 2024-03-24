@@ -63,9 +63,10 @@ export default function Wordle ( {userId} ) {
         }
 
         callAction()
-            .catch((error) => console.log("ERROR: ", error));
+            .catch((error) => alert(`Backend error: ${error}`));
 
     }, [])
+
     useEffect(() => {
         if (data) {
             // Ensure data is loaded
@@ -77,7 +78,6 @@ export default function Wordle ( {userId} ) {
                 setRun(prev => !prev)
             }
             else {
-                alert("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
                 const pstDate = moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
                 const localWordEntry = data.find(entry => entry.day === pstDate);
                 if (!localWordEntry) {
