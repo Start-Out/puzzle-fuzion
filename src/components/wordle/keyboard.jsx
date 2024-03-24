@@ -97,9 +97,6 @@ export default function Keyboard() {
     const {isLoading} = useQuery({
         queryKey: ["word", wordToCheck],
         queryFn: async () => {
-            console.log("wordToCheck: ", wordToCheck)
-            console.log("queriedWord: ", queriedWord)
-
             if (wordToCheck === queriedWord) {
                 return
             }

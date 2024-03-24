@@ -13,7 +13,7 @@ const initial_guess = [
     ["", "", "", "", ""],
 ]
 
-export default function MultiplayerWordle ( {userId} ) {
+export default function Wordle ({userId} ) {
     const [wordle, setWordle] = useState({day: '', word: ''});
     const performMyAction = useAction(api.action.getWord);
     const data = convexQuery(api.wordle.get)

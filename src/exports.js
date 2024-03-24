@@ -4,7 +4,7 @@ import Connections from "./pages/connections/connections.jsx";
 import Create from "./pages/create/create.jsx";
 import Settings from "./pages/settings/settings.jsx";
 import Wordle from "./pages/wordle/wordle.jsx";
-import MultiplayerWordle from "./pages/wordle/multiplayerWordle.jsx";
+import MultiplayerWordle from "./pages/multiplayer/wordle.jsx";
 import Input from "./components/wordle/input.jsx"
 import MultiplayerInput from "./components/multiplayer/input.jsx"
 import MultiplayerKeyboard from "./components/multiplayer/keyboard.jsx"
