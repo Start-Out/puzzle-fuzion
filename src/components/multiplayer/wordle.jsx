@@ -91,7 +91,7 @@ export default function Wordle ({userId, setLoading} ) {
     }, [data]);
 
     return (
-        <div className="flex flex-col justify-center items-center p-4 overflow-y-hidden max-h-screen min-w-screen bg-gray-900 text-white">
+        <div className="flex flex-col justify-center items-center overflow-y-hidden max-h-screen min-w-screen bg-gray-900 text-white">
             <div className="hidden sm:block text-4xl md:text-5xl font-bold mb-10 select-none">
                 Multiplayer
             </div>

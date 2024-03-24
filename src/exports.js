@@ -19,6 +19,8 @@ import MultiplayerControlCenter from "./components/multiplayer/controlCenter.jsx
 import CategoryCard from "./components/create/categoryCard.jsx";
 import CreateControlCenter from "./components/create/controlCenter.jsx";
 import Mistakes from "./components/connections/mistakes.jsx";
+import Restart from "./components/multiplayer/controlCenter/restart.jsx";
+import Session from "./components/multiplayer/controlCenter/session.jsx";
 
 import keyboard_light_mode_backspace from './assets/keyboard_light_mode_backspace.png'
 import keyboard_dark_mode_backspace from './assets/keyboard_dark_mode_backspace.png'
@@ -27,5 +29,6 @@ import puzzle_fuzion from "./assets/puzzle_fusion.png"
 export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerKeyboard,
     Connections, Create, Settings, Input, Keyboard, Loading, Multiplayer, ChatBox, Login,
     WordBox, ControlCenter, CategoryCard, CreateControlCenter, Mistakes, MultiplayerControlCenter,
+    Restart, Session,
     keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion
 }

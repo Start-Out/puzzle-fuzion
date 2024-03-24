@@ -23,14 +23,13 @@ export default function Session() {
     };
 
     return (
-        <div className={"absolute top-[10vh] left-0 p-4 z-20 " +
-            "max-w-[20vw]"}
+        <div className={""}
         >
             <button onClick={toggleSessionOptions}
                     className={"bg-purple-500 hover:bg-purple-700 " +
                         "text-white font-bold py-2 px-4 rounded-full "}
             >
-                Session Options
+                Session
             </button>
             {sessionOptionsVisible && (
                 <div className="mt-4 p-4 bg-gray-800 rounded-md">
