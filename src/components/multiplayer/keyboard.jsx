@@ -29,6 +29,11 @@ export default function Keyboard( {gameId} ) {
     const [cursor, setCursor] = useState([])
     const [wordleWord, setWordleWord] = useState("")
 
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleAlert = () => setIsAlert(prev => !prev)
+
     let inputQueue = [];
 
     useEffect( () => {
@@ -57,14 +62,14 @@ export default function Keyboard( {gameId} ) {
             }
             else if (letter === "hla") {
                 removeGuess({ _id: gameId, cursor: cursor} )
-                    .then(res => res ? true : alert("something went wrong!"))
+                    .then(res => res ? true : alert("Something went wrong! Please try again : ("))
 
                 event.target.blur()
                 return
             }
 
             updateGuess({ _id: gameId, cursor: cursor, letter: letter.toLowerCase()} )
-                .then(res => res ? true : alert("something went wrong!"))
+                .then(res => res ? true : alert("Something went wrong! Please try again : ("))
 
             event.target.blur()
         }
@@ -75,13 +80,15 @@ export default function Keyboard( {gameId} ) {
             if (cursor[1] === 4) {
                 const word = guesses[cursor[0]].join('');
                 if (cursor[0] > 0 && guesses[cursor[0]-1].join('') === guesses[cursor[0]].join('')) {
-                    alert("You entered the same word again!")
+                    setAlertText("You entered the same word again!")
+                    setIsAlert(true)
                 }
                 setWordToCheck(word)
                 setCheckWord(true)
             }
             else {
-                alert("Please enter five letters to guess!")
+                setAlertText("Please enter five letters to guess!")
+                setIsAlert(true)
             }
         }
     }
@@ -108,7 +115,7 @@ export default function Keyboard( {gameId} ) {
                 }
                 else if (event.key === 'Backspace') {
                     removeGuess({ _id: gameId, cursor: cursor} )
-                        .then(res => res ? true : alert("something went wrong!"))
+                        .then(res => res ? true : alert("Something went wrong! Please try again : ("))
                 }
             }
         };
@@ -128,7 +135,7 @@ export default function Keyboard( {gameId} ) {
                 if (res) {
                     processQueue();
                 } else {
-                    alert("Error! Too many request at a time to backend!");
+                    alert("Calma! Too many request at a time to backend!");
                 }
             });
     };
@@ -150,7 +157,8 @@ export default function Keyboard( {gameId} ) {
 
             const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToCheck}`);
             if (!response.ok) {
-                alert(`${wordToCheck} is an invalid word!`);
+                setAlertText(`${wordToCheck} is an invalid word!`)
+                setIsAlert(true)
                 setQueriedWord(wordToCheck)
                 return
             }
@@ -170,10 +178,11 @@ export default function Keyboard( {gameId} ) {
                     // setGameDone(true)
                     toggleGameDone({ _id: gameId} )
                         .then(res => res ? true : alert("something went wrong!"))
-                    alert("You guessed it right!");
+                    setAlertText(`Great job! The word was indeed '${wordleWord}'` )
+                    setGameDone(true)
                 }
                 else if(cursor[0] === 5) {
-                    alert(`You lost! The word was ${wordleWord}`)
+                    setAlertText(`You guys have ran out of attempts! The correct word was '${wordleWord}' :(`)
                     setGameDone(true)
                 }
             }
@@ -250,6 +259,7 @@ export default function Keyboard( {gameId} ) {
                 ))}
             </div>
             {isLoading && <exports.Loading />}
+            {isAlert && <exports.InfoAlert text={alertText} toggle={handleAlert}/>}
         </>
     )
 }

@@ -1,5 +1,4 @@
 import * as exports from "../../exports.js"
-import {useEffect} from "react";
 
 export default function InfoAlert({ text, toggle }) {
 

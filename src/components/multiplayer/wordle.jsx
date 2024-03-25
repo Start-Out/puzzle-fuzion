@@ -22,7 +22,11 @@ export default function Wordle ( {userId} ) {
     const [run, setRun] = useState(false)
 
     const createGame = useMutation(api.games.createGame)
-    const gameDetails = convexQuery(api.games.getGame, { _id: gameId });
+
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleAlert = () => setIsAlert(prev => !prev)
 
     // game session creation
     useEffect( () => {
@@ -38,7 +42,8 @@ export default function Wordle ( {userId} ) {
                 sessionStorage.setItem('gameId', response);
                 setGameId(response);
 
-                alert("New game? Don't type too fast!") // TODO
+                setAlertText("Please note: In multiplayer mode, you may experience brief delays as we save your progress and update the game in real-time.")
+                setIsAlert(true)
             }
         }
         handleCreation()
@@ -69,7 +74,8 @@ export default function Wordle ( {userId} ) {
                 const pstDate = moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
                 const localWordEntry = data.find(entry => entry.day === pstDate);
                 if (!localWordEntry) {
-                    alert("No word entry found for today in PST timezone. Check data or defaults.");
+                    setAlertText("Error fetching today's wordle word!")
+                    setIsAlert(true)
                 } else {
                     setWordle(localWordEntry);
                     setRun(prev => !prev)
@@ -79,14 +85,17 @@ export default function Wordle ( {userId} ) {
     }, [data]);
 
     return (
-        <div className={"flex flex-col justify-center items-center overflow-y-hidden " +
-            "text-white"}>
-            <div className="hidden sm:block text-4xl md:text-5xl font-bold mb-10 select-none">Multiplayer</div>
-            <div className="wordle-content mt-8 flex flex-col items-center space-y-4">
-                <exports.MultiplayerControlCenter />
-                <exports.MultiplayerInput gameId={gameId}/>
-                <exports.MultiplayerKeyboard gameId={gameId}/>
+        <>
+            <div className={"flex flex-col justify-center items-center overflow-y-hidden " +
+                "text-white"}>
+                <div className="hidden sm:block text-4xl md:text-5xl font-bold mb-10 select-none">Multiplayer</div>
+                <div className="wordle-content mt-8 flex flex-col items-center space-y-4">
+                    <exports.MultiplayerControlCenter />
+                    <exports.MultiplayerInput gameId={gameId}/>
+                    <exports.MultiplayerKeyboard gameId={gameId}/>
+                </div>
             </div>
-        </div>
+            { isAlert && <exports.InfoAlert text={alertText} toggle={handleAlert} /> }
+        </>
     );
 }
