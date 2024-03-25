@@ -64,7 +64,7 @@ export default function Create() {
     }
 
     return (
-        <div className={"md:grid grid-cols-2 gap-10 p-5 "}>
+        <div className={"md:grid grid-cols-2 gap-10 p-5 mt-[10vh]"}>
             <div className={"md:overflow-auto md:max-h-[88vh] p-5 " +
                 "bg-gray-700 rounded-lg shadow-lg " +
                 "scrollbar-hide mx-auto"}
@@ -124,4 +124,5 @@ export default function Create() {
     )
 }
 
-const class_game_created_input = `bg-transparent text-white rounded-[10px] max-w-[70%] md:max-w-full text-center`
+const class_game_created_input = "bg-transparent text-white rounded-[10px] max-w-[70%] md:max-w-full text-center " +
+    "border-2 border-dashed border-gray-300 p-1"

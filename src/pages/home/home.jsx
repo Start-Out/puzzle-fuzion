@@ -3,7 +3,7 @@ import * as exports from "../../exports.js"
 
 export default function Home() {
     return (
-        <div className="flex flex-col justify-center flex-grow text-center bg-gradient-to-b from-pf-navbar to-blue-500 min-h-screen">
+        <div className="flex flex-col justify-center flex-grow text-center mt-[5vh]">
             <h1 className="text-4xl font-bold text-gray-200 mb-12 mt-8 select-none">Welcome to PuzzleFuzion!</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 p-8 max-w-6xl w-full mx-auto text-black text-[1.2rem] last-child-center">
                 <NavLink to={"/wordle"} className="group relative overflow-hidden bg-blue-500 hover:bg-blue-600 rounded-lg hover:text-[1.3rem] py-8 px-4 shadow-lg transform hover:scale-105 transition-all transition duration-500 ease-in-out">

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, Outlet } from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {toggleNav} from "../../redux/navbarSlice.js";
 import * as exports from "../../exports.js"
+import {motion} from "framer-motion";
 
-// eslint-disable-next-line react/prop-types
 const LinkTag = ( {to, value, onClick} ) => {
     return (
         <>
@@ -18,22 +18,77 @@ const LinkTag = ( {to, value, onClick} ) => {
 }
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
-
     const dispatch = useDispatch()
 
     const handleClose = () => {
         setIsOpen(false)
         dispatch(toggleNav())
     }
-
     const handleNavToggle = () => {
         setIsOpen(prev => !prev)
         dispatch(toggleNav())
     }
 
+    // navbar visibility based on scroll activity
+    const [isActive, setIsActive] = useState(true)
+    let inactivityTimer
+
+    const handleUserActivity = () => {
+        setIsActive(true)
+
+        clearTimeout(inactivityTimer)
+
+        inactivityTimer = setTimeout( () => {
+            setIsActive(false)
+        }, 3000)
+
+    }
+
+    useEffect( () => {
+        window.addEventListener("scroll", handleUserActivity)
+
+        window.scrollTo(0, 1);
+        window.scrollTo(0, 0);
+
+        return () => {
+            window.removeEventListener("scroll", handleUserActivity)
+            clearTimeout(inactivityTimer)
+        }
+    }, [])
+
+    const navbarVariants = {
+        hidden: {
+            y: "-100%",
+            opacity: 0,
+            transition: {
+                duration: 0.5
+            }
+        },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                duration: 0.5
+            }
+        },
+        hide: {
+            y: "-100%",
+            opacity: 0,
+            transition: {
+                duration: 0.5
+            }
+        }
+    }
     return (
         <>
-            <nav className="bg-pf-navbar z-20">
+
+            <motion.nav
+                variants={navbarVariants}
+                initial={"hidden"}
+                animate={isActive ? "visible" : "hide"}
+                exit={"hidden"}
+                className={"bg-pf-navbar z-20 fixed top-0 inset-x-0 sm:relative h-[7vh]"}
+            >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4 md:space-x-10">
                         <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -101,7 +156,7 @@ export default function Navbar() {
                         </div>
                     </div>
                 </div>
-            </nav>
+            </motion.nav>
 
             <Outlet />
         </>

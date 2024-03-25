@@ -50,9 +50,9 @@ export default function Wordle () {
     }, [data]);
 
     return (
-        <div className="flex flex-col justify-center items-center p-4 overflow-y-hidden">
-            <div className={"sm:block text-4xl md:text-5xl font-bold text-gray-800 mb-10 cursor-default " +
-                "select-none"}>Wordle</div>
+        <div className="flex flex-col justify-center items-center p-4 mt-[7vh]">
+            <div className={"text-4xl md:text-5xl font-bold text-gray-300 mb-10 cursor-default select-none"}>
+                Wordle</div>
             <div className={"wordle-content max-h-[70vh]"}>
                 <exports.Input />
                 <exports.Keyboard />

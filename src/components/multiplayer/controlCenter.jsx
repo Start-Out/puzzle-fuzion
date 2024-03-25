@@ -13,7 +13,7 @@ export default function ControlCenter() {
 
     return (
         <>
-            <div className={"p-4"}>
+            <div className={"p-4 select-none"}>
                 <div className={"flex flex-row gap-2"}>
 
                     <div>

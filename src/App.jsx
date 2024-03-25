@@ -47,7 +47,7 @@ const router = createBrowserRouter( [
 export const App = () => {
     return (
         <main
-            className={"bg-pf-dark-background text-pf-light-text min-h-screen flex flex-col overflow-hidden"}
+            className={"bg-gradient-to-b from-gray-800 to-gray-900 text-pf-light-text min-h-[100vh] flex flex-col"}
         >
             <RouterProvider router={router}/>
         </main>
