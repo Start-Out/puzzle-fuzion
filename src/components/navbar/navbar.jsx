@@ -45,15 +45,24 @@ export default function Navbar() {
     }
 
     useEffect( () => {
-        window.addEventListener("scroll", handleUserActivity)
+        const checkScrollable = () => {
+            // Check if the document body height is greater than or equal the window height
+            const isScrollable = document.body.scrollHeight >= window.innerHeight;
+            setIsActive(isScrollable);
+        };
 
-        window.scrollTo(0, 1);
-        window.scrollTo(0, 0);
+        // Run checkScrollable on initial load
+        checkScrollable();
+
+        // Check scrollability whenever the window is resized
+        window.addEventListener('resize', checkScrollable);
+        window.addEventListener("scroll", handleUserActivity);
 
         return () => {
-            window.removeEventListener("scroll", handleUserActivity)
-            clearTimeout(inactivityTimer)
-        }
+            window.removeEventListener('resize', checkScrollable);
+            window.removeEventListener("scroll", handleUserActivity);
+            clearTimeout(inactivityTimer);
+        };
     }, [])
 
     const navbarVariants = {
@@ -79,13 +88,48 @@ export default function Navbar() {
             }
         }
     }
+
+    const mobileNavVariants = {
+        initial: {
+            opacity: 0,
+            scale: 0.95, // Slightly smaller scale for start
+            transition: {
+                duration: 0.5,
+                ease: 'easeIn', // Ease in for smoother hide transition
+            }
+        },
+        animate: {
+            opacity: 1,
+            scale: 1, // Normal scale for visible state
+            transition: {
+                duration: 0.5,
+                ease: 'easeOut', // Use an easing function for a smoother transition
+            }
+        },
+    }
+
+    const menuContainerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const menuItemVariants = {
+        hidden: { opacity: 0, y: 20 }, // Start lower and faded out
+        show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+    };
+
     return (
         <>
 
             <motion.nav
                 variants={navbarVariants}
                 initial={"hidden"}
-                animate={isActive ? "visible" : "hide"}
+                animate={isActive ? "visible" : "hidden"}
                 exit={"hidden"}
                 className={"bg-pf-navbar z-20 fixed top-0 inset-x-0 sm:relative h-[7vh]"}
             >
@@ -123,7 +167,13 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile menu, show/hide based on mobile menu state. */}
-                <div className={`${isOpen ? "absolute top-0 inset-x-0 transition transform origin-top-right md:hidden" : "hidden"}`}>
+                <motion.div
+                    // className={`${isOpen ? "z-50 absolute top-0 inset-x-0 transition transform origin-top-right md:hidden" : "hidden"}`}
+                    className={"z-50 absolute top-0 inset-x-0 transform origin-top-right md:hidden"}
+                    variants={mobileNavVariants}
+                    initial={"initial"}
+                    animate={ isOpen ? "animate" : "hide"}
+                >
                     <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-pf-navbar ">
                         <div className="pt-5 pb-6 px-5">
                             <div className="flex items-center justify-between">
@@ -144,18 +194,23 @@ export default function Navbar() {
                                     </button>
                                 </div>
                             </div>
-                            <div className="mt-6">
+                            <motion.div
+                                className="mt-6"
+                                variants={menuContainerVariants}
+                                initial={"hidden"}
+                                animate={ isOpen ? "show" : "hidden"}
+                            >
                                 <nav className="grid gap-y-8">
-                                    <LinkTag to="/wordle" value="Wordle" onClick={handleClose}/>
-                                    <LinkTag to="/connections" value="Connections" onClick={handleClose}/>
-                                    <LinkTag to="/multiplayer" value="Multiplayer" onClick={handleClose}/>
-                                    <LinkTag to="/create" value="Create" onClick={handleClose}/>
-                                    <LinkTag to="/settings" value="Settings" onClick={handleClose}/>
+                                    <motion.div variants={menuItemVariants}><LinkTag to="/wordle" value="Wordle" onClick={handleClose}/> </motion.div>
+                                    <motion.div variants={menuItemVariants}><LinkTag to="/connections" value="Connections" onClick={handleClose}/> </motion.div>
+                                    <motion.div variants={menuItemVariants}><LinkTag to="/multiplayer" value="Multiplayer" onClick={handleClose}/> </motion.div>
+                                    <motion.div variants={menuItemVariants}><LinkTag to="/create" value="Create" onClick={handleClose}/> </motion.div>
+                                    <motion.div variants={menuItemVariants}><LinkTag to="/settings" value="Settings" onClick={handleClose}/> </motion.div>
                                 </nav>
-                            </div>
+                            </motion.div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
             </motion.nav>
 
             <Outlet />
