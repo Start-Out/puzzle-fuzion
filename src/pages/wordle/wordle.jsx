@@ -36,16 +36,14 @@ export default function Wordle () {
             }
             else {
                 if (sessionStorage.getItem("wordle_play") !== "true") {
-                    // alert("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
-                    // TODO: custom alert
                     setIsAlert(true)
                     setAlertText("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
                 }
                 const pstDate = moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
                 const localWordEntry = data.find(entry => entry.day === pstDate);
                 if (!localWordEntry) {
-                    alert("No word entry found for today in PST timezone. Check data or defaults.");
-                    // TODO: custom alert
+                    setIsAlert(true)
+                    setAlertText("Error fetching today's wordle word!")
                 } else {
                     dispatch(setWordleWord({
                         word: localWordEntry.word

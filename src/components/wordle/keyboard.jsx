@@ -71,6 +71,10 @@ export default function Keyboard() {
     // Listen for the Enter key press
     useEffect(() => {
         const handleKeyPress = (event) => {
+            if (sessionStorage.getItem("game_done") === "true") {
+                return;
+            }
+
             const tagName = document.activeElement.tagName.toLowerCase();
             if (tagName === 'input' || tagName === 'textarea') {
                 return;
@@ -82,7 +86,7 @@ export default function Keyboard() {
                 return;
             }
 
-            if (!gameDone || sessionStorage.getItem("game_done") === "true") {
+            if (!gameDone) {
                 if (event.key === 'Enter') {
                     handleSubmit();
                 }
@@ -137,11 +141,13 @@ export default function Keyboard() {
                     setGameDone(true)
                     setAlertText(`Great job! The word was indeed '${wordleWord}'` )
                     sessionStorage.setItem("game_done", "true")
+                    sessionStorage.setItem("game_done_text", `Great job! The word was indeed '${wordleWord}'`)
                 }
                 else if(cursor.row === 5) {
                     setGameDone(true)
-                    setAlertText(`:( You ran out of attempts! The word was '${wordleWord}'`)
+                    setAlertText(`You ran out of attempts! The correct word was '${wordleWord}' :(`)
                     sessionStorage.setItem("game_done", "true")
+                    sessionStorage.setItem("game_done_text", `You ran out of attempts! The correct word was '${wordleWord}' :(`)
                 }
             }
             return data;
@@ -214,7 +220,7 @@ export default function Keyboard() {
             {isLoading && <exports.Loading />}
             {isAlert && <exports.InfoAlert text={alertText} toggle={handleAlert} />}
             {(sessionStorage.getItem("game_done") === "true") && gameDone
-                && <exports.GameCompleteAlert text={alertText || "You have already used your attempt for today!"} />}
+                && <exports.GameCompleteAlert text={alertText || sessionStorage.getItem("game_done_text")} />}
         </>
     )
 }
