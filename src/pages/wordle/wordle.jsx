@@ -1,6 +1,6 @@
 import { useQuery as convexQuery, useAction } from "convex/react";
 import { api } from "/convex/_generated/api"
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import * as exports from "../../exports.js"
 import {useDispatch} from "react-redux";
 import {setWordleWord} from "../../redux/wordleSlice.js";
@@ -10,6 +10,10 @@ export default function Wordle () {
     const performMyAction = useAction(api.action.getWord);
     const data = convexQuery(api.wordle.get)
     const dispatch = useDispatch()
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleToggle = () => setIsAlert(prev => !prev)
 
     useEffect( () => {
         if (!data) {
@@ -32,8 +36,10 @@ export default function Wordle () {
             }
             else {
                 if (sessionStorage.getItem("wordle_play") !== "true") {
-                    alert("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
+                    // alert("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
                     // TODO: custom alert
+                    setIsAlert(true)
+                    setAlertText("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
                 }
                 const pstDate = moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
                 const localWordEntry = data.find(entry => entry.day === pstDate);
@@ -50,13 +56,20 @@ export default function Wordle () {
     }, [data]);
 
     return (
-        <div className="flex flex-col justify-center items-center p-4 mt-[7vh]">
-            <div className={"text-4xl md:text-5xl font-bold text-gray-300 mb-10 cursor-default select-none"}>
-                Wordle</div>
-            <div className={"wordle-content max-h-[70vh]"}>
-                <exports.Input />
-                <exports.Keyboard />
+        <>
+            <div className="flex flex-col justify-center items-center p-4 mt-[7vh]">
+                <div className={"text-4xl md:text-5xl font-bold text-gray-300 mb-10 cursor-default select-none"}>
+                    Wordle</div>
+                <div className={"wordle-content max-h-[70vh]"}>
+                    <exports.Input />
+                    <exports.Keyboard />
+                </div>
             </div>
-        </div>
+            {
+                isAlert && <exports.InfoAlert
+                toggle={handleToggle}
+                text={alertText}
+            />}
+        </>
     );
 }

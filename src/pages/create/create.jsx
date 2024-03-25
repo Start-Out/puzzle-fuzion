@@ -64,7 +64,7 @@ export default function Create() {
     }
 
     return (
-        <div className={"md:grid grid-cols-2 gap-10 p-5 mt-[10vh]"}>
+        <div className={"md:grid grid-cols-2 gap-10 p-5 mt-[10vh] sm:mt-[0]"}>
             <div className={"md:overflow-auto md:max-h-[88vh] p-5 " +
                 "bg-gray-700 rounded-lg shadow-lg " +
                 "scrollbar-hide mx-auto"}

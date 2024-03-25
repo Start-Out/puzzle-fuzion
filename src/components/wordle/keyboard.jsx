@@ -24,10 +24,15 @@ export default function Keyboard() {
     const [queriedWord, setQueriedWord] = useState("")
     const [checkWord, setCheckWord] = useState(false);
     const [letterStatuses, setLetterStatuses] = useState({});
-    const [gameDone, setGameDone] = useState(false)
+    const [gameDone, setGameDone] = useState(sessionStorage.getItem("game_done") || "")
+
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleAlert = () => setIsAlert(prev => !prev)
 
     const handleClick = (letter, event) => {
-        if (!gameDone) {
+        if (!gameDone || sessionStorage.getItem("game_done") === "true") {
             if (letter === "Enter") {
                 handleSubmit()
                 event.target.blur()
@@ -45,18 +50,20 @@ export default function Keyboard() {
 
 
     const handleSubmit = () => {
-        if (!gameDone) {
+        if (!gameDone || sessionStorage.getItem("game_done") === "true") {
             if (cursor.col === 4) {
                 const word = guesses[cursor.row].join('');
 
                 if (cursor.row > 0 && guesses[cursor.row-1].join('') === guesses[cursor.row].join('')) {
-                    alert("You entered the same word again!")
+                    setAlertText("You entered the same word again!")
+                    setIsAlert(true)
                 }
                 setWordToCheck(word)
                 setCheckWord(true)
             }
             else {
-                alert("Please enter five letters to guess!")
+                setAlertText("Please enter five letter to guess!")
+                setIsAlert(true)
             }
         }
     }
@@ -75,7 +82,7 @@ export default function Keyboard() {
                 return;
             }
 
-            if (!gameDone) {
+            if (!gameDone || sessionStorage.getItem("game_done") === "true") {
                 if (event.key === 'Enter') {
                     handleSubmit();
                 }
@@ -103,7 +110,8 @@ export default function Keyboard() {
 
             const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToCheck}`);
             if (!response.ok) {
-                alert(`${wordToCheck} is an invalid word!`);
+                setAlertText(`${wordToCheck} is an invalid word!`)
+                setIsAlert(true)
                 setQueriedWord(wordToCheck)
                 return
             }
@@ -111,7 +119,8 @@ export default function Keyboard() {
 
             setQueriedWord(data[0].word)
 
-            if (data[0] && data[0].meanings.length > 0 && !gameDone && prevWord !== wordToCheck) {
+            if (data[0] && data[0].meanings.length > 0 && !gameDone
+                && sessionStorage.getItem("game_done") !== "true" && prevWord !== wordToCheck) {
                 setPrevWord(wordToCheck)
 
                 // analyzeWord
@@ -124,13 +133,15 @@ export default function Keyboard() {
                 }))
                 updateLetterStatuses(result, wordToCheck)
 
-                if (result.every(value => value === 'correct') && !gameDone) {
+                if (result.every(value => value === 'correct') && !gameDone && sessionStorage.getItem("game_done") !== "true") {
                     setGameDone(true)
-                    alert("You guessed it right!");
+                    setAlertText(`Great job! The word was indeed '${wordleWord}'` )
+                    sessionStorage.setItem("game_done", "true")
                 }
                 else if(cursor.row === 5) {
-                    alert(`You lost! The word was ${wordleWord}`)
                     setGameDone(true)
+                    setAlertText(`:( You ran out of attempts! The word was '${wordleWord}'`)
+                    sessionStorage.setItem("game_done", "true")
                 }
             }
             return data;
@@ -187,7 +198,7 @@ export default function Keyboard() {
                                         `${enterButtonClasses}` : letter === "hla" ?
                                         `${backButtonClasses}` : `${defaultButtonClasses}`} `}
                                     onClick={(event) => handleClick(letter, event)}
-                                    disabled={gameDone}
+                                    disabled={gameDone || sessionStorage.getItem("game_done") === "true"}
                                 >
                                     {
                                         letter === 'hla' ?
@@ -201,6 +212,9 @@ export default function Keyboard() {
                 ))}
             </div>
             {isLoading && <exports.Loading />}
+            {isAlert && <exports.InfoAlert text={alertText} toggle={handleAlert} />}
+            {(sessionStorage.getItem("game_done") === "true") && gameDone
+                && <exports.GameCompleteAlert text={alertText || "You have already used your attempt for today!"} />}
         </>
     )
 }

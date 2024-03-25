@@ -130,7 +130,6 @@ export default function Navbar() {
                 variants={navbarVariants}
                 initial={"hidden"}
                 animate={isActive ? "visible" : "hidden"}
-                exit={"hidden"}
                 className={"bg-pf-navbar z-20 fixed top-0 inset-x-0 sm:relative h-[7vh]"}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
