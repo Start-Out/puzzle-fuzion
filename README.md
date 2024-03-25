@@ -43,7 +43,7 @@ PuzzleFuzion is built using modern web technologies to ensure a seamless and eng
 
 - **Convex**: Powers the backend, handling real-time data synchronization, and serverless functions for game logic.
 
-- **Redux**: Manages the application state, ensuring consistency across the platform.\
+- **Redux**: Manages the application state, ensuring consistency across the platform.
 
 
 
