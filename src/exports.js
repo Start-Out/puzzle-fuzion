@@ -26,6 +26,7 @@ import Backdrop from "./components/backdrop/backdrop.jsx";
 import NotFound from "./pages/notFound/notFound.jsx";
 import InfoAlert from "./components/alert/infoAlert.jsx";
 import GameCompleteAlert from "./components/alert/gameCompleteAlert.jsx";
+import SettingsAlert from "./components/alert/settingsAlert.jsx";
 
 import keyboard_light_mode_backspace from './assets/keyboard_light_mode_backspace.png'
 import keyboard_dark_mode_backspace from './assets/keyboard_dark_mode_backspace.png'
@@ -37,12 +38,13 @@ import connections_icon from "./assets/connections_icon.svg"
 import settings_icon from "./assets/settings_icon.svg"
 import create_icon from "./assets/create_icon.svg"
 import multiplayer_icon from "./assets/multiplayer_icon.png"
+import back_button from "./assets/back_button.png"
 
 export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerKeyboard,
     Connections, Create, Settings, Input, Keyboard, Loading, Multiplayer, ChatBox, Login,
     WordBox, ControlCenter, CategoryCard, CreateControlCenter, Mistakes, MultiplayerControlCenter,
-    Restart, Session, ConfirmAlert, Backdrop, NotFound, InfoAlert, GameCompleteAlert,
+    Restart, Session, ConfirmAlert, Backdrop, NotFound, InfoAlert, GameCompleteAlert, SettingsAlert,
     keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion, login_icon, signup_icon,
-    wordle_icon, connections_icon, settings_icon, create_icon, multiplayer_icon
+    wordle_icon, connections_icon, settings_icon, create_icon, multiplayer_icon, back_button
 }
 
