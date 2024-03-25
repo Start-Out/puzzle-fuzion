@@ -18,7 +18,8 @@ function Box( {letter, status} ) {
         <div
             style={{
                 backgroundColor: backgroundColor(status),
-                border: backgroundColor(status) !== 'transparent' && 'none'
+                border: backgroundColor(status) !== 'transparent' && 'none',
+                borderRadius: backgroundColor(status) !== 'transparent' && '5px'
             }}
 
             className={`w-[12vw] h-[12vw] sm:w-[8vw] sm:h-[8vw] md:w-[7vw] md:h-[7vw] lg:w-[4vw] lg:h-[4vw] 
@@ -42,7 +43,7 @@ export default function Input() {
             <div className="w-full max-w-4xl">
                 {[...Array(6)].map((_, rowIndex) => (
                     <div key={rowIndex}
-                         className="grid grid-cols-5 gap-1 mb-1 sm:gap-5 md:gap-1 lg:gap-1 mb-1 md:mb-1 lg:mb-1">
+                         className="grid grid-cols-5 gap-[6px] mb-[6px] ">
                         {[...Array(5)].map((_, colIndex) => {
                             const letter = guesses[rowIndex][colIndex];
                             const status = statuses[rowIndex][colIndex];
