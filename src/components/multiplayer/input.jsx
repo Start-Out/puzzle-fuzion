@@ -6,18 +6,23 @@ function Box({letter, status} ) {
     const backgroundColor = (status) => {
         switch (status) {
             case 'correct':
-                return '#38A169';
+                return 'rgba(56,161,105,0.86)';
             case 'present':
-                return '#ED8936';
+                return 'rgba(237,137,54,0.84)';
             case 'absent':
-                return '#A0AEC0';
+                return '#414141';
             default:
                 return 'transparent';
         }
     };
+
     return (
         <div
-            style={{ backgroundColor: backgroundColor(status) }}
+            style={{
+                backgroundColor: backgroundColor(status),
+                border: backgroundColor(status) !== 'transparent' && 'none',
+                borderRadius: backgroundColor(status) !== 'transparent' && '5px'
+            }}
             className={`w-[12vw] h-[12vw] sm:w-[8vw] sm:h-[8vw] md:w-[7vw] md:h-[7vw] lg:w-[4vw] lg:h-[4vw] 
                         border-2 border-gray-700 
                         flex items-center justify-center 
@@ -47,7 +52,6 @@ export default function Input( {gameId} ) {
     useEffect( () => {
         if (gameDetails) {
             setGuesses(() => {
-                console.log("input, gameDetails: ", gameDetails)
                 return gameDetails.guesses
             })
             setStatus( () => {
@@ -61,7 +65,7 @@ export default function Input( {gameId} ) {
             <div className="w-full max-w-4xl">
                 {[...Array(6)].map((_, rowIndex) => (
                     <div key={rowIndex}
-                         className="grid grid-cols-5 gap-1 mb-1 sm:gap-5 md:gap-1 lg:gap-1 mb-1 md:mb-1 lg:mb-1">
+                         className="grid grid-cols-5 gap-[6px] mb-[6px]">
                         {[...Array(5)].map((_, colIndex) => {
                             const letter = guesses[rowIndex][colIndex]
                             const status = statuses[rowIndex][colIndex];

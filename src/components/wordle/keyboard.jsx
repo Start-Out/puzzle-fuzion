@@ -109,7 +109,6 @@ export default function Keyboard() {
             }
             const data = await response.json()
 
-            // console.log("data: ", data)
             setQueriedWord(data[0].word)
 
             if (data[0] && data[0].meanings.length > 0 && !gameDone && prevWord !== wordToCheck) {
@@ -237,6 +236,5 @@ const analyzeWord = (word, wordleWord) => {
         }
     });
 
-    console.log("final result: ", result)
     return result
 };

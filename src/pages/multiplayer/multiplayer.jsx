@@ -11,7 +11,6 @@ export default function Multiplayer() {
         const userIdFromSession = sessionStorage.getItem('userId');
         if (userIdFromSession) {
             setUserId(userIdFromSession)
-            console.log("from session storage, uid: ", userIdFromSession)
         }
 
         setTimeout( () => {

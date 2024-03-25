@@ -21,18 +21,19 @@ export default function Keyboard( {gameId} ) {
 
     const [wordToCheck, setWordToCheck] = useState('')
     const [prevWord, setPrevWord] = useState("")
+    const [queriedWord, setQueriedWord] = useState("")
     const [checkWord, setCheckWord] = useState(false);
     const [letterStatuses, setLetterStatuses] = useState({});
     const [gameDone, setGameDone] = useState(false)
 
-    const [statuses, setStatuses] = useState([])
     const [cursor, setCursor] = useState([])
     const [wordleWord, setWordleWord] = useState("")
+
+    let inputQueue = [];
 
     useEffect( () => {
         if (gameDetails) {
             setGuesses(() => {
-                console.log("keyboard, gameDetails: ", gameDetails)
                 return gameDetails.guesses
             })
             setCursor(() => {
@@ -40,9 +41,6 @@ export default function Keyboard( {gameId} ) {
             })
             setWordleWord(() => {
                 return gameDetails.word
-            })
-            setStatuses( () => {
-                return gameDetails.statuses
             })
             setGameDone( () => {
                 return gameDetails.gameDone
@@ -76,8 +74,6 @@ export default function Keyboard( {gameId} ) {
         if (!gameDone) {
             if (cursor[1] === 4) {
                 const word = guesses[cursor[0]].join('');
-                console.log("guess: ", word)
-
                 if (cursor[0] > 0 && guesses[cursor[0]-1].join('') === guesses[cursor[0]].join('')) {
                     alert("You entered the same word again!")
                 }
@@ -95,14 +91,11 @@ export default function Keyboard( {gameId} ) {
         const handleKeyPress = (event) => {
             const tagName = document.activeElement.tagName.toLowerCase();
             if (tagName === 'input' || tagName === 'textarea') {
-                // If so, ignore the key press
                 return;
             }
 
-            // Check if any modifier key is pressed
             const isModifierKey = event.ctrlKey || event.altKey || event.shiftKey || event.metaKey;
             if (isModifierKey) {
-                // Ignore the key press if it's part of a key combination
                 return;
             }
 
@@ -111,8 +104,7 @@ export default function Keyboard( {gameId} ) {
                     handleSubmit();
                 }
                 else if (event.key >= 'a' && event.key <= 'z') {
-                    updateGuess({ _id: gameId, cursor: cursor, letter: event.key.toLowerCase()} )
-                        .then(res => res ? true : alert("something went wrong!"))
+                    addToQueue( {gameId, cursor, letter: event.key.toLowerCase()} )
                 }
                 else if (event.key === 'Backspace') {
                     removeGuess({ _id: gameId, cursor: cursor} )
@@ -126,22 +118,51 @@ export default function Keyboard( {gameId} ) {
         return () => document.removeEventListener('keydown', handleKeyPress);
     }, [cursor, gameDone]);
 
+
+    const processQueue = () => {
+        if (inputQueue.length === 0) return;
+
+        const { gameId, cursor, letter } = inputQueue.shift();
+        updateGuess({ _id: gameId, cursor: cursor, letter: letter.toLowerCase() })
+            .then(res => {
+                if (res) {
+                    processQueue();
+                } else {
+                    alert("Error! Too many request at a time to backend!");
+                }
+            });
+    };
+
+    const addToQueue = (input) => {
+        inputQueue.push(input);
+        if (inputQueue.length === 1) {
+            // If the queue was empty before adding, start processing immediately
+            processQueue();
+        }
+    };
+
     const {isLoading} = useQuery({
         queryKey: ["word", wordToCheck],
         queryFn: async () => {
+            if (wordToCheck === queriedWord) {
+                return
+            }
+
             const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToCheck}`);
             if (!response.ok) {
                 alert(`${wordToCheck} is an invalid word!`);
+                setQueriedWord(wordToCheck)
                 return
             }
             const data = await response.json()
+
+            setQueriedWord(data[0].word)
 
             if (data[0] && data[0].meanings.length > 0 && !gameDone && prevWord !== wordToCheck) {
                 setPrevWord(wordToCheck)
 
                 submitGuess({ _id: gameId, cursor: cursor, guess: wordToCheck} )
                     .then(result => {
-                        console.log("from db, result: ", result)
                         updateLetterStatuses(result, wordToCheck)
                     })
 
@@ -167,9 +188,11 @@ export default function Keyboard( {gameId} ) {
     const updateLetterStatuses = (result, word) => {
         const newStatuses = {...letterStatuses};
         word.split('').forEach((char, index) => {
-            // Only update if the new status is "higher" or if the letter hasn't been added yet
             const status = result[index];
-            if (status === 'correct' || status === 'present' && newStatuses[char] !== 'correct' || !newStatuses[char]) {
+            if ((status === 'correct') || (status === 'present' && newStatuses[char.toUpperCase()] !== 'correct')) {
+                newStatuses[char.toUpperCase()] = status;
+            }
+            else if (status === 'absent' && !newStatuses[char.toUpperCase()]) {
                 newStatuses[char.toUpperCase()] = status;
             }
         });
@@ -179,13 +202,13 @@ export default function Keyboard( {gameId} ) {
         const status = letterStatuses[letter];
         switch (status) {
             case 'correct':
-                return '#38A169'; // green
+                return 'rgba(56,161,105,0.86)';
             case 'present':
-                return '#ED8936'; // amber
+                return 'rgba(237,137,54,0.84)';
             case 'absent':
-                return '#A0AEC0'; // cool gray
+                return '#414141';
             default:
-                return 'rgb(129,131,132)'; // default keyboard background
+                return 'rgb(140,140,140)'; // default keyboard background
         }
     };
 

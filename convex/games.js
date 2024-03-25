@@ -29,7 +29,6 @@ export const createGame = mutation({
         statuses: v.array(v.array(v.string()))
     },
     handler: async (ctx, args) => {
-        console.log("guesses: ", args.guesses)
         return await ctx.db.insert('games', {
             userId: args.userId,
             guesses: args.guesses,
@@ -49,7 +48,6 @@ export const updateGuess = mutation({
     },
     handler: async (ctx, args) => {
         const {cursor, letter} = args
-        console.log("in db: ", args._id, " c: ", cursor, " l: ", letter)
         const game = await ctx.db.get(args._id)
 
         if (!game) {
@@ -62,10 +60,6 @@ export const updateGuess = mutation({
             // Update the specific cell with the new letter
             updatedGuesses[cursor[0]][cursor[1]] = letter;
         }
-        else {
-            console.log("DISALLOWWW!!")
-        }
-
         // Save the updated game state back to the database
         await ctx.db.patch(args._id, {
             guesses: updatedGuesses,
@@ -83,7 +77,6 @@ export const removeGuess = mutation({
     },
     handler: async (ctx, args) => {
         const {cursor} = args
-        console.log("r, in db: ", args._id, " c: ", cursor)
         const game = await ctx.db.get(args._id)
 
         if (!game) {
@@ -96,10 +89,6 @@ export const removeGuess = mutation({
             updatedGuesses[cursor[0]][cursor[1]] = "";
             cursor[1] = cursor[1] - 1
         }
-        else {
-            console.log("DISALLOWWW!!")
-        }
-
         // Save the updated game state back to the database
         await ctx.db.patch(args._id, {
             guesses: updatedGuesses,
@@ -118,7 +107,6 @@ export const submitGuess = mutation({
     },
     handler: async (ctx, args) => {
         const {cursor, guess} = args
-        console.log("r, in db: ", args._id, " c: ", cursor, " g: ", guess)
         const game = await ctx.db.get(args._id)
 
         if (!game) {
@@ -135,9 +123,6 @@ export const submitGuess = mutation({
             // update cursor
             cursor[0] = cursor[0] + 1
             cursor[1] = -1
-        }
-        else {
-            console.log("DISALLOWWW!!")
         }
 
         // Save the updated game state back to the database
@@ -179,19 +164,12 @@ const analyzeWord = (word, wordleWord) => {
 
     word.split('').forEach((char, index) => {
         if (wordleChars[index] === char) {
-            // Correct character in the correct position
             result.push('correct');
-            wordleChars[index] = null; // Mark this character as checked
         } else if (wordleChars.includes(char)) {
-            // Correct character in the wrong position
             result.push('present');
-            // Mark the first occurrence of this character as checked
-            wordleChars[wordleChars.indexOf(char)] = null;
         } else {
             result.push('absent');
         }
     });
-
-    console.log("final result: ", result)
     return result
 };

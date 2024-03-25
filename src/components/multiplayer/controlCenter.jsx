@@ -16,7 +16,7 @@ export default function ControlCenter() {
             <div className={"p-4"}>
                 <div className={"flex flex-row gap-2"}>
                     <div>
-                        <Button value={"Session"} toggle={toggleSession} />
+                        <Button value={"Join/Invite"} toggle={toggleSession} />
                         { sessionVisible && <exports.Session toggle={toggleSession}/> }
                     </div>
 
@@ -45,7 +45,7 @@ const Button = ( {value, toggle} ) => {
             </button>
         )
     }
-    else if (value === "Session") {
+    else if (value === "Join/Invite") {
         return (
             <button onClick={() => toggle()}
                     className={`bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full`}>

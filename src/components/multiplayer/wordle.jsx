@@ -37,24 +37,12 @@ export default function Wordle ( {userId} ) {
                 });
                 sessionStorage.setItem('gameId', response);
                 setGameId(response);
-            }
-            else {
-                console.log("from game session storage: ", gameId)
+
+                alert("New game? Don't type too fast!") // TODO
             }
         }
-
         handleCreation()
-            .then(() => {
-                console.log("created session: ", gameId)
-            })
-
     }, [wordle, run])
-
-    useEffect( () => {
-        if (gameDetails) {
-            console.log("initial game: ", gameDetails.guesses)
-        }
-    }, [gameDetails])
 
     // getting the wordle word
     useEffect( () => {
