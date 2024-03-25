@@ -8,7 +8,7 @@ const router = createBrowserRouter( [
         element: (
             <> <ScrollRestoration /> <exports.Navbar /> </>
         ),
-        errorElement: ( <> <h1>404: Some Error Has Occurred</h1> </> ),
+        errorElement: <exports.NotFound />,
         children: [
             {
                 path: "/",

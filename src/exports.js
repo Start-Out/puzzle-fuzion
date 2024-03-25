@@ -23,6 +23,7 @@ import Restart from "./components/multiplayer/controlCenter/restart.jsx";
 import Session from "./components/multiplayer/controlCenter/session.jsx";
 import ConfirmAlert from "./components/alert/confirmAlert.jsx";
 import Backdrop from "./components/backdrop/backdrop.jsx";
+import NotFound from "./pages/notFound/notFound.jsx";
 
 import keyboard_light_mode_backspace from './assets/keyboard_light_mode_backspace.png'
 import keyboard_dark_mode_backspace from './assets/keyboard_dark_mode_backspace.png'
@@ -38,7 +39,7 @@ import multiplayer_icon from "./assets/multiplayer_icon.png"
 export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerKeyboard,
     Connections, Create, Settings, Input, Keyboard, Loading, Multiplayer, ChatBox, Login,
     WordBox, ControlCenter, CategoryCard, CreateControlCenter, Mistakes, MultiplayerControlCenter,
-    Restart, Session, ConfirmAlert, Backdrop,
+    Restart, Session, ConfirmAlert, Backdrop, NotFound,
     keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion, login_icon, signup_icon,
     wordle_icon, connections_icon, settings_icon, create_icon, multiplayer_icon
 }

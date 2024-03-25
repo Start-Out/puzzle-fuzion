@@ -30,6 +30,12 @@
     background: #555; /* Color of the scrollbar thumb on hover */
 }
 
+.shadow-outline {
+    text-shadow:    0 0 1px #000000,
+                    0 0 6px #ffffff,
+                    0 0 0 #ffffff;
+}
+
 @media (min-width: 640px) { /* This corresponds to Tailwind's 'md' breakpoint */
     .last-child-center > :last-child:nth-child(odd) {
         grid-column: span 2; /* Or 'span 2 / span 2' for clarity */
