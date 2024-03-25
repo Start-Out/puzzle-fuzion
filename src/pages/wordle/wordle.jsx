@@ -16,6 +16,7 @@ export default function Wordle () {
             performMyAction()
                 .catch((error) => console.log("Convex action error: ", error));
         }
+        sessionStorage.setItem("wordle_play", "true")
     }, [])
 
     useEffect(() => {
@@ -30,11 +31,15 @@ export default function Wordle () {
                 }))
             }
             else {
-                alert("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
+                if (sessionStorage.getItem("wordle_play") !== "true") {
+                    alert("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
+                    // TODO: custom alert
+                }
                 const pstDate = moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
                 const localWordEntry = data.find(entry => entry.day === pstDate);
                 if (!localWordEntry) {
                     alert("No word entry found for today in PST timezone. Check data or defaults.");
+                    // TODO: custom alert
                 } else {
                     dispatch(setWordleWord({
                         word: localWordEntry.word

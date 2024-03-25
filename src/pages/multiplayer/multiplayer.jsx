@@ -16,7 +16,7 @@ export default function Multiplayer() {
 
         setTimeout( () => {
             setIsLoading(false)
-        }, 500)
+        }, 1000)
 
     }, [])
 

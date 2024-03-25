@@ -5,18 +5,21 @@ function Box( {letter, status} ) {
     const backgroundColor = (status) => {
         switch (status) {
             case 'correct':
-                return '#38A169';
+                return 'rgba(56,161,105,0.86)';
             case 'present':
-                return '#ED8936';
+                return 'rgba(237,137,54,0.84)';
             case 'absent':
-                return '#A0AEC0';
+                return '#414141';
             default:
                 return 'transparent';
         }
     };
     return (
         <div
-            style={{ backgroundColor: backgroundColor(status) }}
+            style={{
+                backgroundColor: backgroundColor(status),
+                border: backgroundColor(status) !== 'transparent' && 'none'
+            }}
 
             className={`w-[12vw] h-[12vw] sm:w-[8vw] sm:h-[8vw] md:w-[7vw] md:h-[7vw] lg:w-[4vw] lg:h-[4vw] 
                         border-2 border-gray-700 

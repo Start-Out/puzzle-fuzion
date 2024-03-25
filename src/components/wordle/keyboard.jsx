@@ -146,9 +146,14 @@ export default function Keyboard() {
     const updateLetterStatuses = (result, word) => {
         const newStatuses = {...letterStatuses};
         word.split('').forEach((char, index) => {
-            // Only update if the new status is "higher" or if the letter hasn't been added yet
             const status = result[index];
-            if (status === 'correct' || status === 'present' && newStatuses[char] !== 'correct' || !newStatuses[char]) {
+            // Check if the letter status is 'correct' in the current or new results,
+            // or if it's 'present' and not already marked 'correct'.
+            if ((status === 'correct') || (status === 'present' && newStatuses[char.toUpperCase()] !== 'correct')) {
+                newStatuses[char.toUpperCase()] = status;
+            }
+            // If the letter is absent and not already marked, update it.
+            else if (status === 'absent' && !newStatuses[char.toUpperCase()]) {
                 newStatuses[char.toUpperCase()] = status;
             }
         });
@@ -158,13 +163,13 @@ export default function Keyboard() {
         const status = letterStatuses[letter];
         switch (status) {
             case 'correct':
-                return '#38A169'; // green
+                return 'rgba(56,161,105,0.86)';
             case 'present':
-                return '#ED8936'; // amber
+                return 'rgba(237,137,54,0.84)';
             case 'absent':
-                return '#A0AEC0'; // cool gray
+                return '#414141';
             default:
-                return 'rgb(129,131,132)'; // default keyboard background
+                return 'rgb(140,140,140)'; // default keyboard background
         }
     };
 
@@ -224,14 +229,9 @@ const analyzeWord = (word, wordleWord) => {
 
     word.split('').forEach((char, index) => {
         if (wordleChars[index] === char) {
-            // Correct character in the correct position
             result.push('correct');
-            wordleChars[index] = null; // Mark this character as checked
         } else if (wordleChars.includes(char)) {
-            // Correct character in the wrong position
             result.push('present');
-            // Mark the first occurrence of this character as checked
-            wordleChars[wordleChars.indexOf(char)] = null;
         } else {
             result.push('absent');
         }
