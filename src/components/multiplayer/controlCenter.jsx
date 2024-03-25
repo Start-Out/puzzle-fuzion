@@ -15,14 +15,15 @@ export default function ControlCenter() {
         <>
             <div className={"p-4"}>
                 <div className={"flex flex-row gap-2"}>
-                    <div>
-                        <Button value={"Join/Invite"} toggle={toggleSession} />
-                        { sessionVisible && <exports.Session toggle={toggleSession}/> }
-                    </div>
 
                     <div>
                         <Button value={"Restart"} toggle={toggleRestart} />
                         { restartVisible && <exports.Restart toggle={toggleRestart}/> }
+                    </div>
+
+                    <div>
+                        <Button value={"Join/Invite"} toggle={toggleSession} />
+                        { sessionVisible && <exports.Session toggle={toggleSession}/> }
                     </div>
 
                     <div>
