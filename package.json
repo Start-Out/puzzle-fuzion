@@ -17,6 +17,7 @@
     "convex": "^1.10.0",
     "cors": "^2.8.5",
     "express": "^4.18.3",
+    "framer-motion": "^11.0.20",
     "moment-timezone": "^0.5.45",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

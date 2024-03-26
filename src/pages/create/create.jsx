@@ -1,7 +1,7 @@
 import * as exports from "../../exports.js"
 import {useState, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getStartingBoard, updateGameName, updateName} from "../../redux/createSlice.js";
+import {getStartingBoard, reset, updateGameName, updateName} from "../../redux/createSlice.js";
 
 export default function Create() {
     const dispatch = useDispatch()
@@ -41,6 +41,8 @@ export default function Create() {
         setShuffledNumbers(numbers)
 
         startingBoard = [["", "", "", ""], ["", "", "", ""], ["", "", "", ""], ["", "", "", ""]]
+
+        dispatch(reset())
         return () => {
             scrollDiv.removeEventListener('mouseover', handleMouseOver);
             scrollDiv.removeEventListener('mouseout', handleMouseOut);
@@ -64,7 +66,7 @@ export default function Create() {
     }
 
     return (
-        <div className={"md:grid grid-cols-2 gap-10 p-5 "}>
+        <div className={"md:grid grid-cols-2 gap-10 p-5 mt-[10vh] sm:mt-[0]"}>
             <div className={"md:overflow-auto md:max-h-[88vh] p-5 " +
                 "bg-gray-700 rounded-lg shadow-lg " +
                 "scrollbar-hide mx-auto"}
@@ -92,7 +94,8 @@ export default function Create() {
                         level={2} category={"Tech Companies"} clues={["Tesla", "Samsung", "Intel", "HP"]}/>
                     <exports.CategoryCard
                         posIndex={shuffledNumbers.slice(12, 16)}
-                        level={3} category={"Celebrity first names"} clues={["Cillian", "Ryan", "Cristiano", "Margot"]}/>
+                        level={3} category={"Celebrity first names"}
+                        clues={["Cillian", "Ryan", "Cristiano", "Margot"]}/>
                 </div>
             </div>
             <div className={"md:flex flex-col justify-center items-center "}>
@@ -124,4 +127,5 @@ export default function Create() {
     )
 }
 
-const class_game_created_input = `bg-transparent text-white rounded-[10px] max-w-[70%] md:max-w-full text-center`
+const class_game_created_input = "bg-transparent text-white rounded-[10px] max-w-[70%] md:max-w-full text-center " +
+    "border-2 border-dashed border-gray-300 p-1"

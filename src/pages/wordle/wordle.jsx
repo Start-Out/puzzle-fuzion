@@ -1,27 +1,26 @@
 import { useQuery as convexQuery, useAction } from "convex/react";
 import { api } from "/convex/_generated/api"
-import { useEffect, useState, useRef } from "react";
+import {useEffect, useState} from "react";
 import * as exports from "../../exports.js"
 import {useDispatch} from "react-redux";
 import {setWordleWord} from "../../redux/wordleSlice.js";
 import moment from "moment-timezone";
 
 export default function Wordle () {
-    const [wordle, setWordle] = useState({day: '', word: ''});
     const performMyAction = useAction(api.action.getWord);
     const data = convexQuery(api.wordle.get)
     const dispatch = useDispatch()
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
 
-    console.log("initial data: ", data)
+    const handleToggle = () => setIsAlert(prev => !prev)
 
     useEffect( () => {
-        async function callAction() {
-            await performMyAction();
+        if (!data) {
+            performMyAction()
+                .catch((error) => console.log("Convex action error: ", error));
         }
-
-        callAction()
-            .catch((error) => console.log("ERROR: ", error));
-
+        sessionStorage.setItem("wordle_play", "true")
     }, [])
 
     useEffect(() => {
@@ -31,19 +30,21 @@ export default function Wordle () {
             const localWordEntry = data.find(entry => entry.day === localDate);
 
             if (localWordEntry) {
-                setWordle(localWordEntry);
                 dispatch(setWordleWord({
                     word: localWordEntry.word
                 }))
             }
             else {
-                alert("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
+                if (sessionStorage.getItem("wordle_play") !== "true") {
+                    setIsAlert(true)
+                    setAlertText("Permission denied to obtain local timezone, using system default timezone: America/Los_Angeles (PST)")
+                }
                 const pstDate = moment().tz('America/Los_Angeles').format('YYYY-MM-DD');
                 const localWordEntry = data.find(entry => entry.day === pstDate);
                 if (!localWordEntry) {
-                    alert("No word entry found for today in PST timezone. Check data or defaults.");
+                    setIsAlert(true)
+                    setAlertText("Error fetching today's wordle word!")
                 } else {
-                    setWordle(localWordEntry);
                     dispatch(setWordleWord({
                         word: localWordEntry.word
                     }));
@@ -52,17 +53,21 @@ export default function Wordle () {
         }
     }, [data]);
 
-    const containerRef = useRef(null);
-
-    console.log("Guess word: ", wordle.word);
     return (
-        <div ref={containerRef} className="flex flex-col justify-center items-center p-4 overflow-y-hidden">
-            <div className={"sm:block text-4xl md:text-5xl font-bold text-gray-800 mb-10 cursor-default " +
-                "select-none"}>Wordle</div>
-            <div className={"wordle-content max-h-[70vh]"}>
-                <exports.Input />
-                <exports.Keyboard />
+        <>
+            <div className="flex flex-col justify-center items-center p-4 mt-[7vh]">
+                <div className={"text-4xl md:text-5xl font-bold text-gray-300 mb-10 cursor-default select-none"}>
+                    Wordle</div>
+                <div className={"wordle-content max-h-[70vh]"}>
+                    <exports.Input />
+                    <exports.Keyboard />
+                </div>
             </div>
-        </div>
+            {
+                isAlert && <exports.InfoAlert
+                toggle={handleToggle}
+                text={alertText}
+            />}
+        </>
     );
 }

@@ -12,37 +12,7 @@ import {useEffect, useState} from "react";
 import * as exports from "../../exports.js"
 import {useQuery} from "@tanstack/react-query";
 
-const analyzeWord = (word, wordleWord) => {
-    let result = [];
-
-    // Convert wordleWord into an array to manipulate its characters
-    let wordleChars = wordleWord.split('');
-
-    word.split('').forEach((char, index) => {
-        if (wordleChars[index] === char) {
-            // Correct character in the correct position
-            result.push('correct');
-            wordleChars[index] = null; // Mark this character as checked
-        } else if (wordleChars.includes(char)) {
-            // Correct character in the wrong position
-            result.push('present');
-            // Mark the first occurrence of this character as checked
-            wordleChars[wordleChars.indexOf(char)] = null;
-        } else {
-            result.push('absent');
-        }
-    });
-
-    console.log("final result: ", result)
-    return result
-};
-
 export default function Keyboard() {
-    const keyboard_keys = [
-        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-        ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'hla']
-    ]
 
     const dispatch = useDispatch()
     const guesses = useSelector(getGuesses)
@@ -51,20 +21,26 @@ export default function Keyboard() {
 
     const [wordToCheck, setWordToCheck] = useState('')
     const [prevWord, setPrevWord] = useState("")
+    const [queriedWord, setQueriedWord] = useState("")
     const [checkWord, setCheckWord] = useState(false);
     const [letterStatuses, setLetterStatuses] = useState({});
-    const [gameDone, setGameDone] = useState(false)
+    const [gameDone, setGameDone] = useState(sessionStorage.getItem("game_done") || "")
+
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleAlert = () => setIsAlert(prev => !prev)
 
     const handleClick = (letter, event) => {
-        if (!gameDone) {
+        if (!gameDone || sessionStorage.getItem("game_done") === "true") {
             if (letter === "Enter") {
                 handleSubmit()
-                // event.target.blur()
+                event.target.blur()
                 return
             }
             else if (letter === "hla") {
                 dispatch(removeGuess())
-                // event.target.blur()
+                event.target.blur()
                 return
             }
             dispatch(updateGuess({letter: letter.toLowerCase()}))
@@ -74,19 +50,20 @@ export default function Keyboard() {
 
 
     const handleSubmit = () => {
-        if (!gameDone) {
+        if (!gameDone || sessionStorage.getItem("game_done") === "true") {
             if (cursor.col === 4) {
-                console.log("guess: ", guesses[cursor.row])
                 const word = guesses[cursor.row].join('');
 
                 if (cursor.row > 0 && guesses[cursor.row-1].join('') === guesses[cursor.row].join('')) {
-                    alert("You entered the same word again!")
+                    setAlertText("You entered the same word again!")
+                    setIsAlert(true)
                 }
                 setWordToCheck(word)
                 setCheckWord(true)
             }
             else {
-                alert("Please enter five letters to guess!")
+                setAlertText("Please enter five letter to guess!")
+                setIsAlert(true)
             }
         }
     }
@@ -94,16 +71,18 @@ export default function Keyboard() {
     // Listen for the Enter key press
     useEffect(() => {
         const handleKeyPress = (event) => {
+            if (sessionStorage.getItem("game_done") === "true") {
+                return;
+            }
+
             const tagName = document.activeElement.tagName.toLowerCase();
             if (tagName === 'input' || tagName === 'textarea') {
-                // If so, ignore the key press
                 return;
             }
 
             // Check if any modifier key is pressed
             const isModifierKey = event.ctrlKey || event.altKey || event.shiftKey || event.metaKey;
             if (isModifierKey) {
-                // Ignore the key press if it's part of a key combination
                 return;
             }
 
@@ -129,14 +108,23 @@ export default function Keyboard() {
     const {isLoading} = useQuery({
         queryKey: ["word", wordToCheck],
         queryFn: async () => {
+            if (wordToCheck === queriedWord) {
+                return
+            }
+
             const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToCheck}`);
             if (!response.ok) {
-                alert(`${wordToCheck} is an invalid word!`);
+                setAlertText(`${wordToCheck} is an invalid word!`)
+                setIsAlert(true)
+                setQueriedWord(wordToCheck)
                 return
             }
             const data = await response.json()
 
-            if (data[0] && data[0].meanings.length > 0 && !gameDone && prevWord !== wordToCheck) {
+            setQueriedWord(data[0].word)
+
+            if (data[0] && data[0].meanings.length > 0 && !gameDone
+                && sessionStorage.getItem("game_done") !== "true" && prevWord !== wordToCheck) {
                 setPrevWord(wordToCheck)
 
                 // analyzeWord
@@ -149,13 +137,17 @@ export default function Keyboard() {
                 }))
                 updateLetterStatuses(result, wordToCheck)
 
-                if (result.every(value => value === 'correct') && !gameDone) {
+                if (result.every(value => value === 'correct') && !gameDone && sessionStorage.getItem("game_done") !== "true") {
                     setGameDone(true)
-                    alert("You guessed it right!");
+                    setAlertText(`Great job! The word was indeed '${wordleWord}'` )
+                    sessionStorage.setItem("game_done", "true")
+                    sessionStorage.setItem("game_done_text", `Great job! The word was indeed '${wordleWord}'`)
                 }
                 else if(cursor.row === 5) {
-                    alert(`You lost! The word was ${wordleWord}`)
                     setGameDone(true)
+                    setAlertText(`You ran out of attempts! The correct word was '${wordleWord}' :(`)
+                    sessionStorage.setItem("game_done", "true")
+                    sessionStorage.setItem("game_done_text", `You ran out of attempts! The correct word was '${wordleWord}' :(`)
                 }
             }
             return data;
@@ -170,9 +162,14 @@ export default function Keyboard() {
     const updateLetterStatuses = (result, word) => {
         const newStatuses = {...letterStatuses};
         word.split('').forEach((char, index) => {
-            // Only update if the new status is "higher" or if the letter hasn't been added yet
             const status = result[index];
-            if (status === 'correct' || status === 'present' && newStatuses[char] !== 'correct' || !newStatuses[char]) {
+            // Check if the letter status is 'correct' in the current or new results,
+            // or if it's 'present' and not already marked 'correct'.
+            if ((status === 'correct') || (status === 'present' && newStatuses[char.toUpperCase()] !== 'correct')) {
+                newStatuses[char.toUpperCase()] = status;
+            }
+            // If the letter is absent and not already marked, update it.
+            else if (status === 'absent' && !newStatuses[char.toUpperCase()]) {
                 newStatuses[char.toUpperCase()] = status;
             }
         });
@@ -182,24 +179,15 @@ export default function Keyboard() {
         const status = letterStatuses[letter];
         switch (status) {
             case 'correct':
-                return '#38A169'; // green
+                return 'rgba(56,161,105,0.86)';
             case 'present':
-                return '#ED8936'; // amber
+                return 'rgba(237,137,54,0.84)';
             case 'absent':
-                return '#A0AEC0'; // cool gray
+                return '#414141';
             default:
-                return 'rgb(129,131,132)'; // default keyboard background
+                return 'rgb(140,140,140)'; // default keyboard background
         }
     };
-
-    // Responsive button classes
-    const buttonBaseClasses = "bg-pf-keyboard-background hover:bg-gray-400 " +
-                                "text-pf-light-text font-bold " +
-                                "rounded shadow " +
-                                "h-[7vh] select-none "
-    const defaultButtonClasses = "w-[7.7vw] md:w-[4vw] ";
-    const enterButtonClasses = "w-[13vw] p-1 text-[1rem] md:w-[6vw] ";
-    const backButtonClasses = "w-[10vw] p-1 md:w-[5vw] md:p-2 ";
 
     return (
         <>
@@ -216,7 +204,7 @@ export default function Keyboard() {
                                         `${enterButtonClasses}` : letter === "hla" ?
                                         `${backButtonClasses}` : `${defaultButtonClasses}`} `}
                                     onClick={(event) => handleClick(letter, event)}
-                                    disabled={gameDone}
+                                    disabled={gameDone || sessionStorage.getItem("game_done") === "true"}
                                 >
                                     {
                                         letter === 'hla' ?
@@ -230,6 +218,43 @@ export default function Keyboard() {
                 ))}
             </div>
             {isLoading && <exports.Loading />}
+            {isAlert && <exports.InfoAlert text={alertText} toggle={handleAlert} />}
+            {(sessionStorage.getItem("game_done") === "true") && gameDone
+                && <exports.GameCompleteAlert text={alertText || sessionStorage.getItem("game_done_text")} />}
         </>
     )
 }
+
+// Responsive button classes
+const buttonBaseClasses = "bg-pf-keyboard-background hover:bg-gray-400 " +
+    "text-pf-light-text font-bold " +
+    "rounded shadow " +
+    "h-[7vh] select-none "
+const defaultButtonClasses = "w-[7.7vw] md:w-[4vw] ";
+const enterButtonClasses = "w-[13vw] p-1 text-[1rem] md:w-[6vw] ";
+const backButtonClasses = "w-[10vw] p-1 md:w-[5vw] md:p-2 ";
+
+const keyboard_keys = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Enter', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'hla']
+]
+
+const analyzeWord = (word, wordleWord) => {
+    let result = [];
+
+    // Convert wordleWord into an array to manipulate its characters
+    let wordleChars = wordleWord.split('');
+
+    word.split('').forEach((char, index) => {
+        if (wordleChars[index] === char) {
+            result.push('correct');
+        } else if (wordleChars.includes(char)) {
+            result.push('present');
+        } else {
+            result.push('absent');
+        }
+    });
+
+    return result
+};

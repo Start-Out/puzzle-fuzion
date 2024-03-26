@@ -45,6 +45,19 @@ const createPageSlice = createSlice({
         },
         updateGameName(state, action) {
             state.gameName = action.payload.gameName
+        },
+        reset(state) {
+            state.startingBoard = startingBoard
+            state.board = {}
+            state.gameName = ""
+            state.name = ""
+            state.categories = {}
+            state.words = {
+                0: ["", "", "", ""],
+                1: ["", "", "", ""],
+                2: ["", "", "", ""],
+                3: ["", "", "", ""]
+            }
         }
     },
     selectors: {
@@ -58,5 +71,5 @@ const createPageSlice = createSlice({
 })
 
 export default createPageSlice.reducer
-export const { updateStartingBoard, updateWords, updateCategory, updateName, updateGameName, updateBoard } = createPageSlice.actions
+export const { updateStartingBoard, updateWords, updateCategory, updateName, updateGameName, updateBoard, reset } = createPageSlice.actions
 export const { getStartingBoard, getGameName, getName, getCategories, getWords } = createPageSlice.selectors

@@ -5,48 +5,30 @@ import * as exports from '../../exports.js'
 
 export default function Multiplayer() {
     const [userId, setUserId] = useState("")
-    const [loading, setLoading] = useState(true)
-    const [chatboxVisible, setChatboxVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect( () => {
         const userIdFromSession = sessionStorage.getItem('userId');
         if (userIdFromSession) {
             setUserId(userIdFromSession)
-            console.log("from session storage, uid: ", userIdFromSession)
         }
+
+        setTimeout( () => {
+            setIsLoading(false)
+        }, 1000)
+
     }, [])
 
     const user = convexQuery(api.users.getUser, {
         _id: `${userId}`
     })
 
-    useEffect( () => {
-        setLoading(false)
-    }, [user])
-
-    const toggleChatbox = () => setChatboxVisible(prev => !prev)
-
     return (
-        <div className={"flex flex-col items-center justify-center min-h-[95vh] min-w-screen"}>
+        <div className={"flex flex-col items-center justify-center  min-w-screen"}>
             {
-                loading ?
-                <exports.Loading /> :
-                user !== null ?
-                <>
-                    {chatboxVisible && (
-                        <div className="fixed inset-0 bg-black min-h-screen bg-opacity-50 z-10" onClick={toggleChatbox}></div>
-                    )}
-                    <div className="absolute top-[10vh] right-0 p-4 z-20">
-                        <button onClick={toggleChatbox} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-                            Chat
-                        </button>
-                        {chatboxVisible && <exports.ChatBox toggleLoading={(setThis) => setLoading(setThis)} />}
-                    </div>
-                    <exports.MultiplayerWordle userId={userId} />
-                </> :
-                <>
-                    <exports.Login />
-                </>
+                isLoading ? <exports.Loading text={"Loading..."} /> : (
+                    !user ? <exports.Login /> : <exports.MultiplayerWordle userId={userId} />
+                )
             }
         </div>
     );

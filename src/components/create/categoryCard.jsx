@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {updateCategory, updateStartingBoard, updateWords} from "../../redux/createSlice.js";
+import {useDispatch} from "react-redux";
+import { updateCategory, updateStartingBoard, updateWords} from "../../redux/createSlice.js";
 
 const Clues = ({value, classes, posIndex, level, index}) => {
-    const [text, setText] = useState("");
+    const [text, setText] = useState( "");
 
     const dispatch = useDispatch();
 
@@ -12,7 +12,7 @@ const Clues = ({value, classes, posIndex, level, index}) => {
         if (text) {
             dispatch(updateStartingBoard({
                 position: posIndex,
-                word: text
+                word: text.toUpperCase()
             }));
             dispatch(updateWords({
                 level: level,
@@ -28,8 +28,9 @@ const Clues = ({value, classes, posIndex, level, index}) => {
                 type={"text"}
                 value={text}
                 placeholder={value}
-                className={`max-w-[100%] bg-gray-400 p-1 rounded-[5px] text-[1rem] placeholder-gray-700 ${classes}`}
-                onChange={(e) => setText((e.target.value).toUpperCase())}
+                className={`max-w-full bg-transparent border-2 border-black
+                 p-1 rounded-[5px] text-[1rem] placeholder-gray-700 ${classes}`}
+                onChange={(e) => setText((e.target.value))}
             />
         </>
     );
@@ -37,10 +38,10 @@ const Clues = ({value, classes, posIndex, level, index}) => {
 
 export default function CategoryCard( { level, category, clues = ["Apple", "Grape", "Jackfruit", "Mango"], posIndex } ) {
     const levelColors = {
-        0: 'rgba(255,235,59,0.80)',
-        1: 'rgba(76,175,80,0.80)',
-        2: 'rgba(33,150,243,0.80)',
-        3: 'rgba(244,67,54,0.80)',
+        0: 'rgba(248,223,109,0.89)',
+        1: '#A1C35A',
+        2: '#B1C3EF',
+        3: '#BA81C5',
     };
     const backgroundColor = levelColors[level]
 
@@ -71,8 +72,8 @@ export default function CategoryCard( { level, category, clues = ["Apple", "Grap
                 <div className={"font-bold text-[1.2rem] mb-2"}>Category</div>
                 <input value={userCategory}
                        placeholder={category}
-                       className={`max-w-[100%] bg-gray-400 p-1 rounded-[5px] 
-                       text-[1rem] placeholder-gray-700`}
+                       className={`max-w-[100%] bg-transparent p-1 rounded-[5px] text-[1.1rem] 
+                       text-[1rem] placeholder-gray-700 border-2 border-black`}
                        onChange={(e) => handleCategoryChange(e)}
                 />
             </div>

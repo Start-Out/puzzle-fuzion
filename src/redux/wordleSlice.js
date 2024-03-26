@@ -40,10 +40,6 @@ const wordleSlice = createSlice({
                 state.cursor.col = -1
             }
         },
-        resetState(state) {
-            state.guesses = initial_guess_state
-            state.cursor = {row: 0, col: -1}
-        },
         setWordleWord(state, action) {
             state.wordleWord = action.payload.word
         },
@@ -60,5 +56,5 @@ const wordleSlice = createSlice({
 })
 
 export default wordleSlice.reducer
-export const { updateGuess, removeGuess, submitGuess, resetState, setWordleWord, updateResult } = wordleSlice.actions
+export const { updateGuess, removeGuess, submitGuess, setWordleWord, updateResult } = wordleSlice.actions
 export const { getGuesses, getCursor, getWordleWord, getStatuses } = wordleSlice.selectors

@@ -3,12 +3,12 @@ import {useEffect, useState} from "react";
 import * as exports from "../../exports.js"
 import {useDispatch, useSelector} from "react-redux";
 import {
-    getAttempts,
     getCreator,
     getGameName,
     getStartingBoard,
     setBoard,
-    setCreator, setGameName,
+    setCreator,
+    setGameName,
     setStartingBoard
 } from "../../redux/connectionSlice.js";
 import {useParams} from "react-router-dom";
@@ -19,13 +19,10 @@ import {getNavbarOpen} from "../../redux/navbarSlice.js";
 
 export default function Connections(  ) {
     const {game_id} = useParams()
-    const _id = game_id
     const [query, setQuery] = useState(false)
-    const attempts = useSelector(getAttempts)
 
-    const game = convexQuery(api.connections.getGame, {_id: _id || "hla"})
+    const game = convexQuery(api.connections.getGame, {_id: game_id || "hla"})
 
-    console.log("game: ", game)
     const dispatch = useDispatch()
     const startingBoard = useSelector(getStartingBoard)
     const creator = useSelector(getCreator)
@@ -42,10 +39,7 @@ export default function Connections(  ) {
             const response = await fetch(`https://qyvst5d5rh.execute-api.us-east-2.amazonaws.com/default/getTodaysGame`)
             if (!response) {throw new Error("Network response was not okay!")}
 
-            const data = await response.json()
-            console.log("data: ", data)
-            console.log("starting board: ", data.startingBoard)
-            return data
+            return await response.json()
         },
         enabled: query === true,
     })
@@ -66,8 +60,6 @@ export default function Connections(  ) {
 
     // query for connection
     useEffect( () => {
-        console.log("game id: ", game_id)
-
         if (game_id) {
             setQuery(false)
         }
@@ -75,17 +67,6 @@ export default function Connections(  ) {
             setQuery(true)
         }
 
-        // Logic to scroll
-        const scrollToPosition = () => {
-            const screenHeight = window.innerHeight;
-            const scrollTarget = screenHeight * 0.5; // Adjust the multiplier as needed
-            window.scrollTo({
-                top: scrollTarget,
-                behavior: 'smooth' // For smooth scrolling
-            });
-        };
-
-        scrollToPosition();
     }, [])
 
 
@@ -102,27 +83,31 @@ export default function Connections(  ) {
             dispatch(setGameName({
                 gameName: game.gameName
             }))
-            if ( startingBoard.length === 1) {
-                dispatch(setStartingBoard({
-                    startingBoard: board.startingBoard
-                }))
-            }
+            dispatch(setStartingBoard({
+                startingBoard: board.startingBoard
+            }))
         }
-    }, [game, startingBoard])
+    }, [game_id, game])
 
     return (
         <>
-            <div className="flex flex-col items-center justify-center min-h-[93vh] bg-gray-900 text-white">
+            <div className="flex flex-col items-center justify-center mt-[7vh] text-white">
                 <div className={"select-none text-gray-600 " +
-                    "mt-0 sm:mt-10 mb-10 "}
+                    "mt-5 mb-5 "}
                 >
-                    <h1 className={"text-4xl font-bold text-center"}>
-                        {gameName ? gameName : "Connections"}
-                    </h1>
                     {
-                        creator ? (
-                            <h2 className={"text-2xl font-bold text-center italic"}>By {creator}</h2>
-                        ) : <></>
+                        !isLoading && (
+                            <>
+                                <h1 className={"text-4xl md:text-5xl font-bold text-center text-gray-300"}>
+                                    {gameName ? gameName : "Connections"}
+                                </h1>
+                                {
+                                    creator ? (
+                                        <h2 className={"text-2xl font-bold text-center italic"}>By {creator}</h2>
+                                    ) : <></>
+                                }
+                            </>
+                        )
                     }
                 </div>
                 {isLoading? (
@@ -132,7 +117,7 @@ export default function Connections(  ) {
                 ) : (
                     startingBoard && (
                         <div className="w-full flex flex-col items-center gap-8 px-4 md:px-8">
-                            <div className="flex flex-wrap justify-center gap-4 pt-16 pb-5 max-w-6xl bg-gray-800 rounded-lg shadow-md">
+                            <div className="flex flex-wrap justify-center gap-4 pt-12 pb-12 max-w-3xl bg-gray-800 rounded-lg shadow-md">
                                 {
                                     startingBoard.map((wordRow, index) => {
                                         if (wordRow[0] && wordRow[0].includes("hla")) {
@@ -156,9 +141,7 @@ export default function Connections(  ) {
                                     })
                                 }
                             </div>
-                            <div>
-                                Mistakes left: {attempts}
-                            </div>
+                            <exports.Mistakes />
                             <div className="w-full max-w-6xl">
                                 <exports.ControlCenter />
                             </div>
@@ -166,7 +149,7 @@ export default function Connections(  ) {
                     )
                 )}
                 {
-                    game && !navbarOpen && <ShareButton />
+                    game_id && !navbarOpen && <ShareButton />
                 }
             </div>
 

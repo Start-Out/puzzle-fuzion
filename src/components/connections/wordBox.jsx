@@ -1,10 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
 import {getProgress, getSelection, removeSelection, updateSelection} from "../../redux/connectionSlice.js";
+import {useState} from "react";
+import * as exports from "../../exports.js"
 
 export default function WordBox( {word, correct, level, category, listOfWords} ) {
     const dispatch = useDispatch()
     const selection = useSelector(getSelection)
     const progress = useSelector(getProgress)
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleAlert = () => setIsAlert(prev => !prev)
 
     const handleClick = (word) => {
         // check if the selection exists, if it does, deselect it
@@ -17,7 +23,8 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
 
 
         if (selection.length > 3) {
-            alert("You have already chosen 4 words!")
+            setAlertText("You have already chosen 4 words!")
+            setIsAlert(true)
             return
         }
         dispatch(updateSelection({
@@ -51,10 +58,10 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
                 </> : (
                 <>
                     <div className={"bg-gray-600 h-[70px] " +
-                        "w-[93%] sm:w-[83%] " +
-                        "border-2 rounded w-full" +
-                        "flex justify-center items-center " +
-                        "hover:bg-gray-700 select-none cursor-pointer text-center"}
+                        "w-[85vw] sm:w-[86%] " +
+                        " rounded w-full " +
+                        "flex flex-col justify-center items-center " +
+                        "select-none cursor-pointer"}
                             style={{
                                 backgroundColor: `${getWordColor(null, null, correct, level)}`,
                                 color: `black`
@@ -63,7 +70,7 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
                         <div className={"font-bold text-[1.3rem] md:text-[1.6rem]"}>
                             {category}
                         </div>
-                        <div className={"text-[1rem] sm:text-[1.3rem]"}>
+                        <div className={"text-[0.9rem] sm:text-[1.2rem] italic"}>
                             {listOfWords}
                         </div>
                     </div>
@@ -71,6 +78,7 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
                 )
 
             }
+            { isAlert && <exports.InfoAlert text={alertText} toggle={handleAlert}/> }
         </>
     )
 }
