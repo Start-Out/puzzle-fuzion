@@ -80,30 +80,23 @@ export default function Navbar() {
                 duration: 0.5
             }
         },
-        hide: {
-            y: "-100%",
-            opacity: 0,
-            transition: {
-                duration: 0.5
-            }
-        }
     }
 
     const mobileNavVariants = {
         initial: {
             opacity: 0,
-            scale: 0.95, // Slightly smaller scale for start
+            scale: 0.95,
             transition: {
                 duration: 0.5,
-                ease: 'easeIn', // Ease in for smoother hide transition
+                ease: 'easeIn',
             }
         },
         animate: {
             opacity: 1,
-            scale: 1, // Normal scale for visible state
+            scale: 1,
             transition: {
                 duration: 0.5,
-                ease: 'easeOut', // Use an easing function for a smoother transition
+                ease: 'easeOut',
             }
         },
     }
@@ -166,50 +159,54 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile menu, show/hide based on mobile menu state. */}
-                <motion.div
-                    // className={`${isOpen ? "z-50 absolute top-0 inset-x-0 transition transform origin-top-right md:hidden" : "hidden"}`}
-                    className={"z-50 absolute top-0 inset-x-0 transform origin-top-right md:hidden"}
-                    variants={mobileNavVariants}
-                    initial={"initial"}
-                    animate={ isOpen ? "animate" : "hide"}
-                >
-                    <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-pf-navbar ">
-                        <div className="pt-5 pb-6 px-5">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <NavLink to={"/"} onClick={handleClose}>
-                                        <img src={exports.puzzle_fuzion} alt="logo" className="h-11 w-auto rounded-[10px]" />
-                                    </NavLink>
-                                </div>
-                                <div className="-mr-2">
-                                    <button
-                                        onClick={handleNavToggle}
-                                        className="bg-gray-800 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                {
+                    isOpen &&
+                    <>
+                        <motion.div
+                            className={"z-50 absolute top-0 inset-x-0 transform origin-top-right"}
+                            variants={mobileNavVariants}
+                            initial={"initial"}
+                            animate={"animate"}
+                        >
+                            <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-pf-navbar ">
+                                <div className="pt-5 pb-6 px-5">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <NavLink to={"/"} onClick={handleClose}>
+                                                <img src={exports.puzzle_fuzion} alt="logo" className="h-11 w-auto rounded-[10px]" />
+                                            </NavLink>
+                                        </div>
+                                        <div className="-mr-2">
+                                            <button
+                                                onClick={handleNavToggle}
+                                                className="bg-gray-800 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                                            >
+                                                <span className="sr-only">Close menu</span>
+                                                <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <motion.div
+                                        className="mt-6"
+                                        variants={menuContainerVariants}
+                                        initial={"hidden"}
+                                        animate={ isOpen ? "show" : "hidden"}
                                     >
-                                        <span className="sr-only">Close menu</span>
-                                        <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                        </svg>
-                                    </button>
+                                        <nav className="grid gap-y-8">
+                                            <motion.div variants={menuItemVariants}><LinkTag to="/wordle" value="Wordle" onClick={handleClose}/> </motion.div>
+                                            <motion.div variants={menuItemVariants}><LinkTag to="/connections" value="Connections" onClick={handleClose}/> </motion.div>
+                                            <motion.div variants={menuItemVariants}><LinkTag to="/multiplayer" value="Multiplayer" onClick={handleClose}/> </motion.div>
+                                            <motion.div variants={menuItemVariants}><LinkTag to="/create" value="Create" onClick={handleClose}/> </motion.div>
+                                            <motion.div variants={menuItemVariants}><LinkTag to="/settings" value="Settings" onClick={handleClose}/> </motion.div>
+                                        </nav>
+                                    </motion.div>
                                 </div>
                             </div>
-                            <motion.div
-                                className="mt-6"
-                                variants={menuContainerVariants}
-                                initial={"hidden"}
-                                animate={ isOpen ? "show" : "hidden"}
-                            >
-                                <nav className="grid gap-y-8">
-                                    <motion.div variants={menuItemVariants}><LinkTag to="/wordle" value="Wordle" onClick={handleClose}/> </motion.div>
-                                    <motion.div variants={menuItemVariants}><LinkTag to="/connections" value="Connections" onClick={handleClose}/> </motion.div>
-                                    <motion.div variants={menuItemVariants}><LinkTag to="/multiplayer" value="Multiplayer" onClick={handleClose}/> </motion.div>
-                                    <motion.div variants={menuItemVariants}><LinkTag to="/create" value="Create" onClick={handleClose}/> </motion.div>
-                                    <motion.div variants={menuItemVariants}><LinkTag to="/settings" value="Settings" onClick={handleClose}/> </motion.div>
-                                </nav>
-                            </motion.div>
-                        </div>
-                    </div>
-                </motion.div>
+                        </motion.div>
+                    </>
+                }
             </motion.nav>
 
             <Outlet />
