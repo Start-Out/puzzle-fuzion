@@ -40,6 +40,7 @@ export default function Navbar() {
 
         inactivityTimer = setTimeout( () => {
             setIsActive(false)
+            setIsOpen(false)
         }, 3000)
 
     }
