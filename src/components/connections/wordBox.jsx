@@ -1,10 +1,16 @@
 import {useDispatch, useSelector} from "react-redux";
 import {getProgress, getSelection, removeSelection, updateSelection} from "../../redux/connectionSlice.js";
+import {useState} from "react";
+import * as exports from "../../exports.js"
 
 export default function WordBox( {word, correct, level, category, listOfWords} ) {
     const dispatch = useDispatch()
     const selection = useSelector(getSelection)
     const progress = useSelector(getProgress)
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleAlert = () => setIsAlert(prev => !prev)
 
     const handleClick = (word) => {
         // check if the selection exists, if it does, deselect it
@@ -17,7 +23,8 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
 
 
         if (selection.length > 3) {
-            alert("You have already chosen 4 words!")
+            setAlertText("You have already chosen 4 words!")
+            setIsAlert(true)
             return
         }
         dispatch(updateSelection({
@@ -71,6 +78,7 @@ export default function WordBox( {word, correct, level, category, listOfWords} )
                 )
 
             }
+            { isAlert && <exports.InfoAlert text={alertText} toggle={handleAlert}/> }
         </>
     )
 }

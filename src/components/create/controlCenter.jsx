@@ -3,7 +3,8 @@ import {getCategories, getGameName, getName, getStartingBoard, getWords, updateB
 import { useMutation } from "convex/react";
 import { api } from "/convex/_generated/api"
 import {useNavigate} from "react-router-dom";
-
+import {useState} from "react";
+import * as exports from "../../exports.js"
 
 const Button = ( {value, onClick} ) => {
     return (
@@ -23,32 +24,36 @@ export default function CreateControlCenter() {
     const name = useSelector(getName)
     const gameName = useSelector(getGameName)
     const startingBoard = useSelector(getStartingBoard)
-
+    const [gameId, setGameId] = useState("")
     const createGame = useMutation(api.connections.createGame)
 
-    const navigate = useNavigate()
+
+
+    const [isAlert, setIsAlert] = useState(false)
+    const [alertText, setAlertText] = useState("")
+
+    const handleAlert = () => setIsAlert(prev => !prev)
 
     const handleCreate = () => {
         if (!gameName || !name || (gameName === "") || name  === "") {
-            alert("The game name and the created by fields must be field!")
-            return
-        }
-
-        if (startingBoard.some(row => row.some(word => word === ""))) {
-            alert("Please enter all clues before submitting!")
+            setAlertText("The game name and the created by fields must be filled!")
+            setIsAlert(true)
             return
         }
 
         if (Object.values(categories).some(value => value === "")) {
-            alert("Please enter all the category fields before submitting!")
+            setAlertText("Please enter all the category fields before submitting!")
+            setIsAlert(true)
             return
         }
 
-        alert("Submitting")
-        console.log("Submitting!")
+        if (startingBoard.some(row => row.some(word => word === ""))) {
+            setAlertText("Please enter all clues before submitting!")
+            setIsAlert(true)
+            return
+        }
 
         const result = buildBoard(name, startingBoard, categories, solution)
-        console.log("result: ", result)
 
         dispatch(updateBoard({
             board: result
@@ -65,20 +70,30 @@ export default function CreateControlCenter() {
 
         handleCreation()
             .then(res => {
-                console.log("res: ", res);
-                navigate(`/connections/${res}`);
-                return res; // Make sure to return res or the specific data you need
+                setGameId(res)
+                return res;
             })
             .catch(error => {
                 console.error("Error:", error);
             });
 
+        setAlertText("Your connection puzzle has been created! Redirect to connections page?")
+        setIsAlert(true)
+    }
+
+    const navigate = useNavigate()
+
+    const handleOkay = () => {
+        navigate(`/connections/${gameId}`)
     }
 
     return (
-        <div className={"flex flex-row gap-5 justify-center items-center mt-10"}>
-            <Button value={"Create"} onClick={handleCreate}/>
-        </div>
+        <>
+            <div className={"flex flex-row gap-5 justify-center items-center mt-10"}>
+                <Button value={"Create"} onClick={handleCreate}/>
+            </div>
+            {isAlert && <exports.NavigateAlert text={alertText} onOk={handleOkay} onCancel={handleAlert} />}
+        </>
     )
 }
 

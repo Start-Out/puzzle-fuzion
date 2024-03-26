@@ -42,7 +42,7 @@ export default function Wordle ( {userId} ) {
                 sessionStorage.setItem('gameId', response);
                 setGameId(response);
 
-                setAlertText("Please note: In multiplayer mode, you may experience brief delays as we save your progress and update the game in real-time.")
+                setAlertText("Please note: In multiplayer mode, you may experience brief delays or input overlaps as we save your progress and update the game in real-time.")
                 setIsAlert(true)
             }
         }
@@ -87,9 +87,9 @@ export default function Wordle ( {userId} ) {
     return (
         <>
             <div className={"flex flex-col justify-center items-center overflow-y-hidden " +
-                "text-white"}>
-                <div className="hidden sm:block text-4xl md:text-5xl font-bold mb-10 select-none">Multiplayer</div>
-                <div className="wordle-content mt-8 flex flex-col items-center space-y-4">
+                "text-white mt-[7vh] sm:mt-0"}>
+                <div className="hidden sm:block text-4xl md:text-5xl font-bold mt-2 mb-5 select-none">Multiplayer</div>
+                <div className="wordle-content flex flex-col items-center space-y-4">
                     <exports.MultiplayerControlCenter />
                     <exports.MultiplayerInput gameId={gameId}/>
                     <exports.MultiplayerKeyboard gameId={gameId}/>

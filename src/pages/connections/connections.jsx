@@ -19,10 +19,9 @@ import {getNavbarOpen} from "../../redux/navbarSlice.js";
 
 export default function Connections(  ) {
     const {game_id} = useParams()
-    const _id = game_id
     const [query, setQuery] = useState(false)
 
-    const game = convexQuery(api.connections.getGame, {_id: _id || "hla"})
+    const game = convexQuery(api.connections.getGame, {_id: game_id || "hla"})
 
     const dispatch = useDispatch()
     const startingBoard = useSelector(getStartingBoard)
@@ -84,13 +83,11 @@ export default function Connections(  ) {
             dispatch(setGameName({
                 gameName: game.gameName
             }))
-            if ( startingBoard.length === 1) {
-                dispatch(setStartingBoard({
-                    startingBoard: board.startingBoard
-                }))
-            }
+            dispatch(setStartingBoard({
+                startingBoard: board.startingBoard
+            }))
         }
-    }, [game, startingBoard])
+    }, [game_id, game])
 
     return (
         <>
@@ -152,7 +149,7 @@ export default function Connections(  ) {
                     )
                 )}
                 {
-                    game && !navbarOpen && <ShareButton />
+                    game_id && !navbarOpen && <ShareButton />
                 }
             </div>
 

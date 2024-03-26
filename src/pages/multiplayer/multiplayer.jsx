@@ -24,7 +24,7 @@ export default function Multiplayer() {
     })
 
     return (
-        <div className={"flex flex-col items-center justify-center min-h-[95vh] min-w-screen"}>
+        <div className={"flex flex-col items-center justify-center  min-w-screen"}>
             {
                 isLoading ? <exports.Loading text={"Loading..."} /> : (
                     !user ? <exports.Login /> : <exports.MultiplayerWordle userId={userId} />
