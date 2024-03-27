@@ -191,9 +191,9 @@ export default function Keyboard() {
 
     return (
         <>
-            <div className={"flex flex-col items-center justify-center gap-2 p-4 mx-auto max-h-[100%]"}>
+            <div className={"flex flex-col items-center justify-center gap-[6px] p-4 mx-auto max-h-[100%]"}>
                 {keyboard_keys.map((row, rowIndex) => (
-                    <div key={rowIndex} className="flex justify-center gap-2 max-w-[90vw] md:max-w-[50vw] ">
+                    <div key={rowIndex} className="flex justify-center gap-[5px] max-w-[90vw] md:max-w-[50vw] ">
                         {row.map((letter, letterIndex) => {
                             return (
                                 <button
@@ -230,7 +230,7 @@ const buttonBaseClasses = "bg-pf-keyboard-background hover:bg-gray-400 " +
     "text-pf-light-text font-bold " +
     "rounded shadow " +
     "h-[7vh] select-none "
-const defaultButtonClasses = "w-[7.7vw] md:w-[4vw] ";
+const defaultButtonClasses = "w-[8vw] md:w-[4vw] ";
 const enterButtonClasses = "w-[13vw] p-1 text-[1rem] md:w-[6vw] ";
 const backButtonClasses = "w-[10vw] p-1 md:w-[5vw] md:p-2 ";
 
