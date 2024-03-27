@@ -41,6 +41,7 @@ import settings_icon from "./assets/settings_icon.svg"
 import create_icon from "./assets/create_icon.svg"
 import multiplayer_icon from "./assets/multiplayer_icon.png"
 import back_button from "./assets/back_button.png"
+import puzzle_icon from "./assets/puzzle_icon.svg"
 
 export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerKeyboard,
     Connections, Create, Settings, Input, Keyboard, Loading, Multiplayer, ChatBox, Login,
@@ -48,6 +49,6 @@ export { Home, Navbar, Wordle, MultiplayerWordle, MultiplayerInput, MultiplayerK
     Restart, Session, ConfirmAlert, Backdrop, NotFound, InfoAlert, GameCompleteAlert, SettingsAlert,
     ConnectionIndicator, NavigateAlert,
     keyboard_light_mode_backspace, keyboard_dark_mode_backspace, puzzle_fuzion, login_icon, signup_icon,
-    wordle_icon, connections_icon, settings_icon, create_icon, multiplayer_icon, back_button
+    wordle_icon, connections_icon, settings_icon, create_icon, multiplayer_icon, back_button, puzzle_icon
 }
 

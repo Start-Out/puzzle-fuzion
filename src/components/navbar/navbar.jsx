@@ -124,13 +124,13 @@ export default function Navbar() {
                 variants={navbarVariants}
                 initial={"hidden"}
                 animate={isActive ? "visible" : "hidden"}
-                className={"bg-pf-navbar z-20 fixed top-0 inset-x-0 sm:relative h-[7vh]"}
+                className={"bg-pf-navbar z-20 fixed top-0 inset-x-0 sm:relative h-[8vh]"}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4 md:space-x-10">
                         <div className="flex justify-start lg:w-0 lg:flex-1">
                             <NavLink to="/" >
-                                <img src={exports.puzzle_fuzion} alt="logo" className="w-[55px] h-auto rounded-[10px]" />
+                                <img src={exports.puzzle_icon} alt="logo" className="w-[35px] h-auto" />
                             </NavLink>
                         </div>
                         <div className="-mr-2 -my-2 md:hidden">
@@ -174,7 +174,7 @@ export default function Navbar() {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <NavLink to={"/"} onClick={handleClose}>
-                                                <img src={exports.puzzle_fuzion} alt="logo" className="h-11 w-auto rounded-[10px]" />
+                                                <img src={exports.puzzle_icon} alt="logo" className="w-[35px]" />
                                             </NavLink>
                                         </div>
                                         <div className="-mr-2">
