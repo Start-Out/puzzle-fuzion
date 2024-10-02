@@ -18,7 +18,7 @@ export default function Wordle () {
     useEffect( () => {
         if (!data) {
             performMyAction()
-                .catch((error) => console.log("Convex action error: ", error));
+                .catch((error) => console.error("Convex action error: ", error));
         }
         sessionStorage.setItem("wordle_play", "true")
     }, [])
